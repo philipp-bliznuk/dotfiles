@@ -1,0 +1,147 @@
+[tool.ruff]
+line-length = 88  # Enforces a maximum line length according to PEP 8 with some flexibility.
+indent-width = 4  # Enforces an indentation width of 4 spaces, as per PEP 8.
+target-version = "py312"  # Specifies the Python version target to ensure compatibility with Python 3.12 features.
+output-format = "grouped"  # Uses the full output format for detailed linting reports.
+cache-dir = ".ruff_cache"  # Specifies the cache directory for Ruff to store temporary files.
+preview = true  # Enables preview mode to show the changes that would be made by Ruff.
+fix = true  # Enables fix mode to automatically apply some changes to the code.
+show-fixes = true  # Shows the changes made by Ruff when running in fix mode.
+unsafe-fixes = true  # Allows Ruff to make potentially unsafe changes when running in fix mode.
+
+[tool.ruff.format]
+exclude = [".venv"]  # Exclude virtualenv directories.
+skip-magic-trailing-comma = true  # Ignore trailing commas and don't separate short lines.
+preview = true  # Enables preview mode to show unstable changes that would be made by Ruff.
+
+[tool.ruff.lint]
+exclude = [".venv"]  # Exclude virtualenv directories.
+preview = true  # Enables preview mode to show unstable changes that would be made by Ruff.
+select = [
+    "A",  # flake8-builtins https://docs.astral.sh/ruff/rules/#flake8-builtins-a
+    "ANN",  # flake8-annotations https://docs.astral.sh/ruff/rules/#flake8-annotations-ann
+    "ARG",  # flake8-unused-arguments https://docs.astral.sh/ruff/rules/#flake8-unused-arguments-arg
+    "ASYNC",  # flake8-async https://docs.astral.sh/ruff/rules/#flake8-async-async
+    "B",  # flake8-bugbear https://docs.astral.sh/ruff/rules/#flake8-bugbear-b
+    "BLE",  # flake8-blind-except https://docs.astral.sh/ruff/rules/#flake8-blind-except-ble
+    "C4",  # flake8-comprehensions https://docs.astral.sh/ruff/rules/#flake8-comprehensions-c4
+    "C90",  # mccabe https://docs.astral.sh/ruff/rules/#mccabe-c90
+    "COM",  # flake8-commas https://docs.astral.sh/ruff/rules/#flake8-commas-com
+#    "D",  # pydocstyle https://docs.astral.sh/ruff/rules/#pydocstyle-d
+#    "DTZ",  # flake8-datetimez https://docs.astral.sh/ruff/rules/#flake8-datetimez-dtz
+    "E",  # pycodestyle error https://docs.astral.sh/ruff/rules/#error-e
+    "EM",  # flake8-errmsg https://docs.astral.sh/ruff/rules/#flake8-errmsg-em
+    "ERA",  # eradicate https://docs.astral.sh/ruff/rules/#eradicate-era
+    "EXE",  # flake8-executable https://docs.astral.sh/ruff/rules/#flake8-executable-exe
+    "FBT",  # flake8-boolean-trap https://docs.astral.sh/ruff/rules/#flake8-boolean-trap-fbt
+    "F",  # Pyflakes https://docs.astral.sh/ruff/rules/#pyflakes-f
+    "FLY",  # flynt https://docs.astral.sh/ruff/rules/#flynt-fly
+    "G",  # flake8-logging-format https://docs.astral.sh/ruff/rules/#flake8-logging-format-g
+    "ICN",  # flake8-import-conventions https://docs.astral.sh/ruff/rules/#flake8-import-conventions-icn
+    "INP",  # flake8-no-pep420 https://docs.astral.sh/ruff/rules/#flake8-no-pep420-inp
+#    "I",  # isort https://docs.astral.sh/ruff/rules/#isort-i
+    "ISC",  # flake8-implicit-str-concat https://docs.astral.sh/ruff/rules/#flake8-implicit-str-concat-isc
+    "LOG",  # flake8-logging https://docs.astral.sh/ruff/rules/#flake8-logging-log
+    "N",  # pep8-naming https://docs.astral.sh/ruff/rules/#pep8-naming-n
+    "PERF",  # Perflint https://docs.astral.sh/ruff/rules/#perflint-perf
+    "PGH",  # pygrep-hooks https://docs.astral.sh/ruff/rules/#pygrep-hooks-pgh
+    "PIE",  # flake8-pie https://docs.astral.sh/ruff/rules/#flake8-pie-pie
+    "PTH",  # flake8-use-pathlib https://docs.astral.sh/ruff/rules/#flake8-use-pathlib-pth
+    "PT",  # flake8-pytest-style https://docs.astral.sh/ruff/rules/#flake8-pytest-style-pt
+    "PYI",  # flake8-pyi https://docs.astral.sh/ruff/rules/#flake8-pyi-pyi
+    "Q",  # flake8-quotes https://docs.astral.sh/ruff/rules/#flake8-quotes-q
+    "RET",  # flake8-return https://docs.astral.sh/ruff/rules/#flake8-return-ret
+    "RSE",  # flake8-raise https://docs.astral.sh/ruff/rules/#flake8-raise-rse
+    "RUF",  # Ruff-specific rules https://docs.astral.sh/ruff/rules/#ruff-specific-rules-ruf
+    "S",  # flake8-bandit https://docs.astral.sh/ruff/rules/#flake8-bandit-s
+    "SIM",  # flake8-simplify https://docs.astral.sh/ruff/rules/#flake8-simplify-sim
+    "SLOT",  # flake8-slots https://docs.astral.sh/ruff/rules/#flake8-slots-slot
+    "SLF",  # flake8-self https://docs.astral.sh/ruff/rules/#flake8-self-slf
+#    "TD",  # flake8-todos https://docs.astral.sh/ruff/rules/#flake8-todos-td
+    "TCH",  # flake8-type-checking https://docs.astral.sh/ruff/rules/#flake8-type-checking-tch
+    "TID",  # flake8-tidy-imports https://docs.astral.sh/ruff/rules/#flake8-tidy-imports-tid
+    "T10",  # flake8-debugger https://docs.astral.sh/ruff/rules/#flake8-debugger-t10
+    "T20",  # flake8-print https://docs.astral.sh/ruff/rules/#flake8-print-t20
+    "TRIO",  # flake8-trio https://docs.astral.sh/ruff/rules/#flake8-trio-trio
+    "TRY",  # tryceratops https://docs.astral.sh/ruff/rules/#tryceratops-try
+    "UP",  # pyupgrade https://docs.astral.sh/ruff/rules/#pyupgrade-up
+    "W",  # pycodestyle warning https://docs.astral.sh/ruff/rules/#warning-w
+    "YTT",  # flake8-2020 https://docs.astral.sh/ruff/rules/#flake8-2020-ytt
+]  # Selects specific linting rules to enforce for consistency and readability.
+ignore = [
+    "ANN101",  # missing-type-self https://docs.astral.sh/ruff/rules/missing-type-self/
+    "ANN102",  # missing-type-cls https://docs.astral.sh/ruff/rules/missing-type-cls/
+    "ISC001",  # single-line-implicit-string-concatenation https://docs.astral.sh/ruff/rules/single-line-implicit-string-concatenation/
+    "COM812",  # missing-trailing-comma https://docs.astral.sh/ruff/rules/missing-trailing-comma/
+    "D100",  # undocumented-public-module https://docs.astral.sh/ruff/rules/undocumented-public-module/
+    "D104",  # undocumented-public-package https://docs.astral.sh/ruff/rules/undocumented-public-package/
+    "D105",  # undocumented-magic-method https://docs.astral.sh/ruff/rules/undocumented-magic-method/
+    "D107",  # undocumented-public-init https://docs.astral.sh/ruff/rules/undocumented-public-init/
+    "TD003",  # missing-todo-link https://docs.astral.sh/ruff/rules/missing-todo-link/
+]  # Ignores specific linting rules to reduce noise and focus on the most important issues.
+ignore-init-module-imports = true  # Ignores imports in `__init__.py` files to allow module exports.
+
+[tool.ruff.lint.flake8-import-conventions]
+banned-from = ["typing"]  # Bans imports from the `typing` module to enforce modern type hinting syntax.
+
+[tool.ruff.lint.flake8-tidy-imports]
+ban-relative-imports = "all"  # Bans all relative imports to enforce absolute import paths.
+
+[tool.ruff.lint.flake8-tidy-imports.banned-api]
+"typing.Optional".msg = "Use `<type> | None` notation instead."  # Enforces modern type hinting syntax.
+
+[tool.ruff.lint.flake8-type-checking]
+strict = true  # Enforces strict type checking to catch more errors at compile time.
+exempt-modules = ["typing", "typing_extensions"]  # Exempts certain modules from late import checks to avoid circular dependencies.
+quote-annotations = false  # Enforces PEP 563 to reduce clutter and improve readability.
+
+[tool.ruff.lint.flake8-pytest-style]
+parametrize-values-type = "tuple"  # Enforces the use of tuples for parametrized test values for better readability and consistency.
+
+[tool.ruff.lint.isort]
+case-sensitive = true  # Enforces case-sensitive sorting for imports to avoid confusion.
+combine-as-imports = true  # Combines 'as' imports to a single line for cleaner and more readable code.
+force-sort-within-sections = true  # Forces sorting within import sections for better readability.
+length-sort = true  # Sorts imports by length for better readability.
+split-on-trailing-comma = false  # Disables splitting imports on trailing commas to avoid unnecessary line breaks.
+lines-after-imports = 2  # Enforces 2 lines after imports for better readability.
+relative-imports-order = "closest-to-furthest"  # Sorts relative imports from closest to furthest for better readability.
+known-third-party = [
+    "fastapi",
+    "sqlmodel",
+    "pydantic",
+    "httpx",
+    "uvicorn",
+    "auth0",
+    "pyjwt",
+    "python-jose",
+    "ddtrace",
+    "fastapi_utilities",
+    "pydantic_settings",
+    "starlette",
+    "sqlalchemy",
+    "pytest",
+]  # Defines the modules considered as third-party.
+
+[tool.ruff.lint.mccabe]
+max-complexity = 4  # Sets a stricter complexity limit to encourage simpler functions.
+
+[tool.ruff.lint.pep8-naming]
+classmethod-decorators = [
+    "pydantic.validator",
+    "pydantic.model_validator",
+    "declared_attr",
+    "expression",
+    "comparator",
+]  # Customizes class method decorators for ORM and validation.
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"  # Enforces Google style docstrings for consistency and readability.
+ignore-decorators = ["typing.overload"]  # Ignores methods decorated with `typing.overload` for docstyle checks.
+
+[tool.ruff.lint.pylint]
+max-args = 4  # Allows functions to have up to 4 arguments for greater flexibility.
+max-bool-expr = 3  # Allows more complex boolean expressions.
+max-branches = 5  # Allows functions with more branching for complex logic.
+max-nested-blocks = 3  # Allows one additional level of nesting for complex functions.
+max-positional-args = 3  # Allows up to 4 positional arguments in functions for clarity and readability.

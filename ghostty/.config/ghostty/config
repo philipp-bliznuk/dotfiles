@@ -1,0 +1,25 @@
+theme = catppuccin-mocha
+background = #000000
+background-opacity = 0.8
+background-blur-radius = 20
+
+font-family = JetBrainsMono Nerd Font
+font-size = 13
+cursor-style = block
+cursor-style-blink = false
+shell-integration-features = no-cursor
+mouse-hide-while-typing = true
+
+macos-titlebar-style = hidden
+macos-option-as-alt = true
+macos-non-native-fullscreen = true
+
+confirm-close-surface = false
+window-decoration = true
+
+auto-update = check
+
+keybind = super+r=reload_config
+
+#Autocommands (auto attach tmux when open ghostty)
+#command = zsh --login -c "if command -v tmux >/dev/null 2>&1; then tmux attach || tmux; else zsh; fi"

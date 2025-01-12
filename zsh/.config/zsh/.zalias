@@ -1,0 +1,11 @@
+# Dirs
+alias ..="cd .."
+alias ...="cd ../.."
+alias ....="cd ../../.."
+alias .....="cd ../../../.."
+alias ......="cd ../../../../.."
+
+
+alias ls="eza --color=always --long --git --no-filesize --all --icons=always"
+alias sa='alias | sed "s/^alias //" | fzf --preview "alias {}" --preview-window=right:wrap'
+alias pinentry='pinentry-mac'

@@ -1,0 +1,51 @@
+# https://github.com/Homebrew/homebrew-bundle
+
+# Taps
+tap "homebrew/bundle"
+tap "homebrew/command-not-found"
+tap "homebrew/services"
+tap "jorgelbg/tap"
+
+# Bottles
+brew "python@3.12"
+brew "python@3.13"
+brew "eza"
+brew "fd"
+brew "fzf"
+brew "git"
+brew "psutils"
+brew "jq"
+brew "tree-sitter"
+brew "neovim"
+brew "poppler"
+brew "ripgrep"
+brew "sevenzip"
+brew "starship"
+brew "stow"
+brew "tmux"
+brew "yazi"
+brew "yq"
+brew "zoxide"
+
+# Casks
+cask "font-jetbrains-mono-nerd-font"
+cask "font-symbols-only-nerd-font"
+cask "alacritty"
+cask "ghostty"
+cask "kitty"
+
+# Personal
+brew "openssl@3", link: false
+brew "libpq"
+brew "docker-buildx"
+brew "gnupg"
+brew "pinentry"
+brew "pinentry-mac"
+brew "pinentry-touchid"
+brew "jorgelbg/tap/pinentry-touchid"
+brew "uv"
+brew "tree"
+brew "mkcert"
+brew "postgresql@16"
+
+cask "raycast"

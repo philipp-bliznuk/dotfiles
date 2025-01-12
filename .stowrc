@@ -1,0 +1,4 @@
+--dir=.
+--target=${HOME}
+--ignore=DS_Store
+--ignore=backup

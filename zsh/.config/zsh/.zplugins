@@ -1,0 +1,22 @@
+# Completions
+mattmc3/ez-compinit
+# mattmc3/zephyr path:plugins/completion
+zsh-users/zsh-completions kind:fpath path:src
+aloxaf/fzf-tab
+
+# Syntax highliting
+# zsh-users/zsh-syntax-highlighting
+zdharma-continuum/fast-syntax-highlighting
+
+# Autosuggestions
+zsh-users/zsh-autosuggestions
+
+# History
+zsh-users/zsh-history-substring-search
+
+# Misc
+romkatv/zsh-bench kind:path
+jeffreytse/zsh-vi-mode
+mattmc3/zephyr path:plugins/homebrew
+mattmc3/zephyr path:plugins/history
+mattmc3/zephyr path:plugins/color

@@ -1,0 +1,40 @@
+# Antidote styles
+zstyle ':antidote:home' path $ANTIDOTE_HOME
+zstyle ':antidote:bundle' use-friendly-names 'yes'
+zstyle ':antidote:plugin:*' defer-options '-p'
+zstyle ':antidote:*' zcompile 'yes'
+
+# Use caching
+zstyle ':zephyr:plugin:*' use-cache yes
+
+# Use XDG directories
+zstyle ':zephyr:plugin:*' use-xdg-basedirs yes
+
+# Completion styling
+zstyle ':completion:*:git-checkout:*' sort false
+# zstyle ':completion:*:descriptions' format '[%d]'
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
+# zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
+zstyle ':completion:*' menu no
+
+# zstyle ':completion:*:corrections' format ' -- %d (errors: %e) --'
+# zstyle ':completion:*:descriptions' format ' -- %d --'
+# zstyle ':completion:*:messages' format ' -- %d --'
+# zstyle ':completion:*:warnings' format ' -- no matches found --'
+# zstyle ':completion:*' format ' -- %d --'
+
+# zstyle ':fzf-tab:*' fzf-flags --color=fg:1,fg+:2 --bind=tab:accept
+zstyle ':fzf-tab:*' use-fzf-default-opts yes
+# zstyle ':fzf-tab:*' switch-group '<' '>'
+# zstyle ':fzf-tab:*' fzf-command ftb-tmux-popup
+zstyle ':fzf-tab:complete:cd:*' popup-pad 30 0
+zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza --tree --level 2 --color=always $realpath | head -200'
+zstyle ':fzf-tab:complete:z:*' fzf-preview 'eza --tree --level 2 --color=always $realpath | head -200'
+zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'eza --tree --level 2 --color=always $realpath | head -200'
+zstyle ':fzf-tab:complete:(-command-|-parameter-|-brace-parameter-|export|unset|expand):*' fzf-preview 'echo ${(P)word}'
+zstyle ':fzf-tab:complete:brew-(install|uninstall|search|info):*-argument-rest' fzf-preview 'brew info $word'
+
+# Syntax highlight style
+# `fast-theme -l` - list themes
+# `fast-theme -t {theme-name}` - test theme
+zstyle ':plugin:fast-syntax-highlighting' theme q-jmnemonic
