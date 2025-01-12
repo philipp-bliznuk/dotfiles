@@ -1,22 +1,21 @@
+# Caching
+mroth/evalcache
+
 # Completions
 mattmc3/ez-compinit
-# mattmc3/zephyr path:plugins/completion
-zsh-users/zsh-completions kind:fpath path:src
-aloxaf/fzf-tab
+zsh-users/zsh-completions kind:fpath path:src kind:defer
+aloxaf/fzf-tab kind:defer
 
 # Syntax highliting
-# zsh-users/zsh-syntax-highlighting
-zdharma-continuum/fast-syntax-highlighting
+zsh-users/zsh-syntax-highlighting kind:defer
 
 # Autosuggestions
-zsh-users/zsh-autosuggestions
+zsh-users/zsh-autosuggestions kind:defer
 
 # History
-zsh-users/zsh-history-substring-search
+zsh-users/zsh-history-substring-search kind:defer
 
 # Misc
-romkatv/zsh-bench kind:path
 jeffreytse/zsh-vi-mode
-mattmc3/zephyr path:plugins/homebrew
+mattmc3/zephyr path:plugins/homebrew kind:defer
 mattmc3/zephyr path:plugins/history
-mattmc3/zephyr path:plugins/color

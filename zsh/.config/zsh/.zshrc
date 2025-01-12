@@ -6,11 +6,11 @@
 
 # Load shell completions
 
-source <(starship init zsh)
-source <(fzf --zsh)
-source <(zoxide init --cmd=cd zsh)
-source <(uv generate-shell-completion zsh)
-source <(uvx --generate-shell-completion zsh)
+_evalcache starship init zsh
+_evalcache fzf --zsh
+_evalcache zoxide init --cmd=cd zsh
+_evalcache uv generate-shell-completion zsh
+_evalcache uvx --generate-shell-completion zsh
 
 # Load customizations
 [ ! -f ${ZDOTDIR}/.zcustom ] || source ${ZDOTDIR}/.zcustom

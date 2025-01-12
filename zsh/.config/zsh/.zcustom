@@ -33,3 +33,18 @@ _fzf_compgen_dir() {
 # Key bindings for history search
 bindkey '^[[A' history-search-backward
 bindkey '^[[B' history-search-forward
+
+# Load cargo env if exists
+[ -f "$HOME/.cargo/env" ] && source "$HOME/.cargo/env"
+
+# Always work in a tmux session if Tmux is installed
+if which tmux >/dev/null 2>&1; then
+  # Check if the current environment is suitable for tmux
+  if [[ -z "$TMUX" && \
+        $TERM != "screen-256color" && \
+        $TERM != "screen" ]]; then
+    # Try to attach to the default tmux session, or create a new one if it doesn't exist
+    tmux attach -t default || tmux new -s default
+    exit
+  fi
+fi

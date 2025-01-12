@@ -49,4 +49,5 @@ brew "tree"
 brew "mkcert"
 brew "postgresql@16"
 
+cask "brave-browser"
 cask "raycast"

@@ -48,6 +48,7 @@ export LC_CTYPE="en_US.UTF-8" # Controls character classification and case conve
 # Use Neovim as default editor
 export EDITOR="nvim"
 export VISUAL="nvim"
+export PAGER="less -FX"
 
 export GPG_TTY=$(tty) # Set Git GPG tty
 export MANPATH="/usr/local/man:$MANPATH" # Set manpath
@@ -55,4 +56,5 @@ export NVM_DIR="$HOME/.nvm" # Set NVM Home directory
 export PATH="$HOME/.poetry/bin:$PATH" # Set Poetry Home directory
 export PATH="$HOME/.local/bin:$PATH" # Set local bin directory
 export HOMEBREW_BUNDLE_FILE="$XDG_CONFIG_HOME/brewfile/Brewfile" # brewfile path
+export ZSH_EVALCACHE_DIR="$XDG_CACHE_HOME/zsh/.zsh-evalcache"
 
