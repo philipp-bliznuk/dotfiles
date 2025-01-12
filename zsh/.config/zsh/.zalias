@@ -12,3 +12,7 @@ alias pinentry='pinentry-mac'
 # Convenience
 alias n="nvim"
 alias y="yazi"
+alias dotf='cd "${XDG_PROJECTS_DIR:-$HOME/projects/dotfiles/}" && ${VISUAL:-${EDITOR:-nvim}}'
+
+# Sometimes you just have to ask nicely :)
+alias please=sudo
