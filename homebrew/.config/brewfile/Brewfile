@@ -51,3 +51,4 @@ brew "postgresql@16"
 
 cask "brave-browser"
 cask "raycast"
+cask "devtoys"
