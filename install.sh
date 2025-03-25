@@ -39,6 +39,7 @@ packages=(
     "nvim"
     "ruff"
     "starship"
+    "sketchybar"
     "tmux"
     "zsh"
 )
@@ -111,4 +112,4 @@ install_packages() {
 # Main execution
 process_dotfiles
 symlink_dotfiles
-install_packages
+# install_packages

@@ -5,6 +5,7 @@ tap "homebrew/bundle"
 tap "homebrew/command-not-found"
 tap "homebrew/services"
 tap "jorgelbg/tap"
+tap "oven-sh/bun"
 
 # Bottles
 brew "python@3.12"
@@ -36,6 +37,9 @@ cask "ghostty"
 cask "kitty"
 
 # Personal
+
+tap "FelixKratz/formulae"
+
 brew "openssl@3", link: false
 brew "libpq"
 brew "docker-buildx"
@@ -48,8 +52,16 @@ brew "uv"
 brew "tree"
 brew "mkcert"
 brew "postgresql@16"
+brew "sketchybar"
+brew "switchaudio-osx"
+brew "lazygit"
+brew "lazydocker"
+brew "btop"
+brew "bun"
 
 cask "brave-browser"
 cask "raycast"
 cask "devtoys"
 cask "pgadmin4"
+cask "font-sf-pro"
+cask "sf-symbols"

@@ -16,3 +16,5 @@ SendGrid
 config
 pyproject
 keymaps
+Postgres
+pgvector

@@ -18,7 +18,7 @@ return {
     local telescope = require("telescope")
     local actions = require("telescope.actions")
     local builtin = require("telescope.builtin")
-    local ignore_patterns = { "node_modules", ".git", ".venv", ".idea", ".ruff_cache" }
+    local ignore_patterns = { "node_modules", ".git", ".venv", ".idea", ".ruff_cache", "__pycache__", "*.pyc" }
 
     telescope.setup({
       defaults = {
