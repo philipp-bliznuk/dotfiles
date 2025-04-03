@@ -23,6 +23,7 @@ return {
           "dockerfile",
           "gitignore",
           "vimdoc",
+          "go",
         },
       })
     end,

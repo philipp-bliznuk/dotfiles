@@ -4,7 +4,8 @@ input=(
     script="$PLUGIN_DIR/input.sh"
 )
 
-sketchybar --add event input_change 'AppleSelectedInputSourcesChangedNotification' \
-    --add item input right \
+sketchybar --add item input right \
     --set input "${input[@]}" \
+    \
+    --add event input_change 'AppleSelectedInputSourcesChangedNotification' \
     --subscribe input input_change

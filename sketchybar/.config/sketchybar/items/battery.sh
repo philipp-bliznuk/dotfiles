@@ -1,9 +1,6 @@
 #!/bin/bash
 
 battery=(
-    update_freq=120
-    updates=on
-    icon.font.family="SF Pro"
     script="$PLUGIN_DIR/battery.sh"
 )
 

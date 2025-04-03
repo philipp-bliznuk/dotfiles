@@ -2,9 +2,8 @@
 
 cpu=(
     icon=
+    icon.color=$GREEN
     update_freq=3
-    label.width=50
-    label.align=right
     script="$PLUGIN_DIR/cpu.sh"
 )
 

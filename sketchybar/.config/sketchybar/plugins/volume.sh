@@ -1,24 +1,23 @@
 #!/bin/bash
 
 if [ "$SENDER" = "volume_change" ]; then
-    VOLUME="$INFO"
-    HIGHLIGHT="off"
+    HIGHLIGHT=off
 
-    case "$VOLUME" in
+    case $INFO in
     [6-9][0-9] | 100)
-        ICON="􀊨"
+        ICON=􀊨
         ;;
     [3-5][0-9])
-        ICON="􀊦"
+        ICON=􀊦
         ;;
     [1-9] | [1-2][0-9])
-        ICON="􀊤"
+        ICON=􀊤
         ;;
     *)
-        ICON="􀊢"
-        HIGHLIGHT="on"
+        ICON=􀊢
+        HIGHLIGHT=on
         ;;
     esac
 
-    sketchybar --set "$NAME" icon="$ICON" label="$VOLUME%" icon.highlight="$HIGHLIGHT"
+    sketchybar --set $NAME icon=$ICON label="$INFO%" icon.highlight=$HIGHLIGHT
 fi

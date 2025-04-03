@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source "$CONFIG_DIR/settings.sh"
+source "$CONFIG_DIR/colors.sh"
 
 BATTERY_INFO="$(pmset -g batt)"
 PERCENTAGE=$(echo "$BATTERY_INFO" | grep -Eo "\d+%" | cut -d% -f1)
@@ -11,28 +11,27 @@ if [ $PERCENTAGE = "" ]; then
 fi
 
 COLOR=$ICON_COLOR
-case ${PERCENTAGE} in
+case $PERCENTAGE in
 9[0-9] | 100)
-    ICON="􀛨"
+    ICON=􀛨
     ;;
 [6-8][0-9])
-    ICON="􀺸"
+    ICON=􀺸
     ;;
 [3-5][0-9])
-    ICON="􀺶"
+    ICON=􀺶
     ;;
 [1-2][0-9])
-    ICON="􀛩"
+    ICON=􀛩
     ;;
 *)
-    ICON="􀛪"
+    ICON=􀛪
     COLOR=$RED
     ;;
 esac
 
 if [[ $CHARGING != "" ]]; then
-    ICON="􀢋"
-    COLOR=$WHITE
+    ICON=􀢋
 fi
 
-sketchybar --set $NAME icon="$ICON" icon.color=$COLOR label="${PERCENTAGE}%"
+sketchybar --set $NAME icon=$ICON icon.color=$COLOR label="$PERCENTAGE%"

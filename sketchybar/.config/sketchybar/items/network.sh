@@ -1,16 +1,12 @@
 #!/bin/bash
 
-source "$CONFIG_DIR/colors.sh"
-
 wifi=(
+    update_freq=5
     script="$PLUGIN_DIR/wifi.sh"
 )
 vpn=(
     update_freq=5
     script="$PLUGIN_DIR/vpn.sh"
-)
-bracket=(
-    background.border_color=$MAGENTA
 )
 
 sketchybar --add item wifi right \
@@ -18,7 +14,4 @@ sketchybar --add item wifi right \
     --subscribe wifi wifi_change \
     \
     --add item vpn right \
-    --set vpn "${vpn[@]}" \
-    \
-    --add bracket network wifi vpn \
-    --set network "${bracket[@]}"
+    --set vpn "${vpn[@]}"

@@ -1,6 +1,5 @@
 #!/bin/bash
 
-source "$CONFIG_DIR/colors.sh"
 SIZE=11
 WIDTH=70
 

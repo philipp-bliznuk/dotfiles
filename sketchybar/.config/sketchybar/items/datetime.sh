@@ -7,14 +7,13 @@ date=(
     update_freq=60
     script='sketchybar --set $NAME label="$(date +"%a %d %b")"'
 )
-
 time=(
-    label.width=65
+    label.width=60
     y_offset=-5
     label.align=left
     label.font.size=12.5
     update_freq=1
-    script='sketchybar --set "$NAME" label="$(date "+%T")"'
+    script='sketchybar --set $NAME label="$(date "+%T")"'
 )
 
 sketchybar \

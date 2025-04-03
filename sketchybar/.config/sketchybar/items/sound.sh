@@ -3,7 +3,6 @@
 volume=(
     script="$PLUGIN_DIR/volume.sh"
 )
-
 mic=(
     update_freq=1
     script="$PLUGIN_DIR/mic.sh"
@@ -15,6 +14,4 @@ sketchybar --add item volume right \
     --subscribe volume volume_change \
     \
     --add item mic right \
-    --set mic "${mic[@]}" \
-    \
-    --add bracket sound volume mic
+    --set mic "${mic[@]}"

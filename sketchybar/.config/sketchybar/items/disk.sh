@@ -2,6 +2,7 @@
 
 disk=(
     icon=󱛟
+    icon.color=$BLUE
     update_freq=300
     script="$PLUGIN_DIR/disk.sh"
 )

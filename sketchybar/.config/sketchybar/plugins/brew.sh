@@ -6,8 +6,14 @@ refresh() {
     zsh -c 'brew update &>/dev/null'
     OUTDATED=$(zsh -c 'brew outdated --verbose')
 
-    COUNT=$(zsh -c 'brew outdated' | wc -l | tr -d ' ')
-    args=(--set $NAME label=$COUNT --remove '/brew.popup\.*/')
+    if [ -z "$OUTDATED" ]; then
+        return
+    fi
+
+    args=(--set $NAME icon.color=$RED)
+    if $(sketchybar --query $NAME | jq '.popup.items | length != 0'); then
+        args+=(--remove '/brew.popup\.*/')
+    fi
 
     COUNTER=0
     while IFS= read -r package; do
@@ -15,7 +21,6 @@ refresh() {
             --add item "$NAME".popup.$COUNTER popup."$NAME"
             --set "$NAME".popup.$COUNTER label="${package}"
         )
-
         COUNTER=$((COUNTER + 1))
     done <<<"$OUTDATED"
 
@@ -26,6 +31,7 @@ update() {
     osascript -e 'display notification "Starting Brew package updates..." with title "Package Updates"'
     zsh -c 'brew upgrade >/dev/null && brew cleanup >/dev/null'
     osascript -e 'display notification "Brew packages updated" with title "Package Updates"'
+    sketchybar -m --set $NAME icon.color=$ICON_COLOR --remove '/brew.popup\.*/' >/dev/null
 }
 
 case "$SENDER" in
@@ -41,6 +47,5 @@ case "$SENDER" in
 "mouse.clicked")
     popup off
     update
-    refresh
     ;;
 esac

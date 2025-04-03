@@ -2,16 +2,16 @@
 
 SOURCE=$(defaults read ~/Library/Preferences/com.apple.HIToolbox.plist AppleCurrentKeyboardLayoutInputSourceID)
 
-case ${SOURCE} in
+case $SOURCE in
 'com.apple.keylayout.ABC')
-    LABEL=US
+    LABEL=🇺🇸
     ;;
 'com.apple.keylayout.Ukrainian-PC')
-    LABEL=UA
+    LABEL=🇺🇦
     ;;
 'com.apple.keylayout.Russian')
-    LABEL=RU
+    LABEL=🇷🇺
     ;;
 esac
 
-sketchybar --set $NAME label="$LABEL"
+sketchybar --set $NAME label=$LABEL
