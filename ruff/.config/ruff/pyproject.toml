@@ -1,5 +1,5 @@
 [tool.ruff]
-line-length = 88  # Enforces a maximum line length according to PEP 8 with some flexibility.
+line-length = 120  # Enforces a maximum line length according to PEP 8 with some flexibility.
 indent-width = 4  # Enforces an indentation width of 4 spaces, as per PEP 8.
 target-version = "py312"  # Specifies the Python version target to ensure compatibility with Python 3.12 features.
 output-format = "grouped"  # Uses the full output format for detailed linting reports.
