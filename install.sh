@@ -41,6 +41,7 @@ packages=(
     "starship"
     "sketchybar"
     "tmux"
+    "yazi"
     "zsh"
 )
 # Filter the list to include only existing directories

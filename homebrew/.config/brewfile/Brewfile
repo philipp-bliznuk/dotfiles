@@ -28,6 +28,7 @@ brew "tmux"
 brew "yazi"
 brew "yq"
 brew "zoxide"
+brew "rich"
 
 # Casks
 cask "font-jetbrains-mono-nerd-font"
