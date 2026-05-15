@@ -1,0 +1,78 @@
+[init]
+	defaultBranch = master
+[core]
+	editor = nvim
+	pager = delta
+	excludesfile = $HOME/.config/git/.gitignore
+	deltaBaseCacheLimit = 2g
+	precomposeUnicode = true  # macOS only
+	ignoreCase = true  # macOS only
+[blame]
+	coloring = repeatedLines
+[color]
+	ui = auto
+[color "branch"]
+	current = yellow bold
+	local = green bold
+	remote = cyan bold
+[color "diff"]
+	meta = yellow bold
+	frag = magenta bold
+	old = red bold
+	new = green bold
+	whitespace = red reverse
+[color "status"]
+	added = green bold
+	changed = magenta bold
+	untracked = red bold
+[column]
+	ui = auto
+[commit]
+	gpgsign = true
+[fetch]
+	prune = true
+	pruneTags = true
+	all = true
+[pull]
+	rebase = false
+[merge]
+	tool = vimdiff
+	conflictstyle = merge
+[mergetool]
+	prompt = false
+[user]
+	name = Philipp Bliznuk
+	email = philipp.bliznuk@gmail.com
+	username = philipp-bliznuk
+	signingkey = 2F728CC11D7C6163
+[web]
+	browser = brave
+[diff]
+	colorMoved = zebra
+	tool = vimdiff
+[difftool]
+	prompt = false
+[rebase]
+	backend = merge
+	autoSquash = true
+[sequence]
+	editor = interactive-rebase-tool
+[delta]
+	features = line-numbers decorations
+	line-numbers = true
+[delta "decorations"]
+	minus-style = red bold normal
+	plus-style = green bold normal
+	minus-emph-style = white bold red
+	minus-non-emph-style = red bold normal
+	plus-emph-style = white bold green
+	plus-non-emph-style = green bold normal
+	file-style = yellow bold none
+	file-decoration-style = yellow box
+	hunk-header-style = magenta bold
+	hunk-header-decoration-style = magenta box
+	minus-empty-line-marker-style = normal normal
+	plus-empty-line-marker-style = normal normal
+	line-numbers-right-format = "{np:^4}│ "
+[gitflow "prefix"]
+	versiontag = v

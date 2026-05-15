@@ -1,0 +1,15 @@
+# A TOML linter such as https://github.com/tombi-toml/tombi can use this schema to validate your config.
+# If you encounter any problems, please make an issue at https://github.com/yazi-rs/schemas.
+
+#:schema https://yazi-rs.github.io/schemas/keymap.json
+
+[mgr]
+prepend_keymap = [
+    { on = "!", run = 'shell "$SHELL" --block', desc = "Open $SHELL here" },
+    { on = ["C"], run = "plugin ouch", desc = "Compress with ouch" },
+]
+
+[input]
+prepend_keymap = [
+    { on = "<Esc>", run = "close", desc = "Cancel input" }
+]
