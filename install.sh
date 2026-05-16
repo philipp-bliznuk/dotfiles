@@ -53,6 +53,7 @@ packages=(
 	nvim
 	ruff
 	sketchybar
+	themes
 	tmux
 	yazi
 	zsh

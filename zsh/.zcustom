@@ -1,27 +1,57 @@
-# Customize FZF
-bindkey "ç" fzf-cd-widget # Fix for ALT+C on Mac
-show_file_or_dir_preview="if [ -d {} ]; then eza --tree --color=always {} | head -200; else bat -n --color=always --line-range :500 {}; fi"
+# Insert-mode keybindings (survive zsh-vi-mode init)
+function zvm_after_init() {
+  # History search with arrow keys
+  bindkey '^[[A' history-search-backward
+  bindkey '^[[B' history-search-forward
 
-export FZF_CTRL_T_OPTS="--preview '$show_file_or_dir_preview'"
-export FZF_DEFAULT_COMMAND="fd --hidden --strip-cwd-prefix --exclude .git --exclude .venv --exclude .idea"
-export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
-export FZF_DEFAULT_OPTS=$FZF_DEFAULT_OPTS'
---color=fg:#D8DEE9,bg:-1,hl:#5fff87,fg+:#D8DEE9,bg+:-1,hl+:#ffaf5f
---color=info:#af87ff,prompt:#5fff87,pointer:#ff87d7,marker:#ff87d7,spinner:#ff87d7
-'
-
-_fzf_comprun() {
-  local command=$1
-  shift
-
-  case "$command" in
-    cd)           fzf --preview 'eza --tree --color=always {} | head -200' "$@" ;;
-    export|unset) fzf --preview "eval 'echo ${}'"         "$@" ;;
-    ssh)          fzf --preview 'dig {}'                   "$@" ;;
-    *)            fzf --preview "$show_file_or_dir_preview" "$@" ;;
-  esac
+  # FZF widgets (zvm stomps these on init)
+  bindkey '^R' fzf-history-widget
+  bindkey '^T' fzf-file-widget
+  bindkey "ç" fzf-cd-widget
 }
 
+# Normal/visual-mode keybindings (load lazily on first ESC)
+function zvm_after_lazy_keybindings() {
+  # H/L for beginning/end of line
+  bindkey -M vicmd 'H' beginning-of-line
+  bindkey -M vicmd 'L' end-of-line
+
+  # Y to yank to end of line (consistent with D/C behavior)
+  bindkey -M vicmd 'Y' vi-yank-eol
+
+  # Ctrl+h/l to navigate words in normal mode
+  bindkey -M vicmd '^h' backward-word
+  bindkey -M vicmd '^l' forward-word
+
+  # Open command in $EDITOR with 'e'
+  autoload -Uz edit-command-line
+  zle -N edit-command-line
+  bindkey -M vicmd 'e' edit-command-line
+
+  # U for redo (symmetry with u for undo)
+  bindkey -M vicmd 'U' redo
+}
+
+# FZF configuration (fzf 0.48+ built-in walker, no FZF_DEFAULT_COMMAND needed)
+show_file_or_dir_preview="if [ -d {} ]; then eza --tree --all --color=always {} | head -200; else bat -n --color=always --line-range :500 {}; fi"
+
+export FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS \
+  --walker-skip=.git,.venv,.idea,node_modules,target"
+
+export FZF_CTRL_T_OPTS="\
+  --walker=file,dir,hidden \
+  --preview '$show_file_or_dir_preview' \
+  --bind 'ctrl-/:change-preview-window(down|hidden|)'"
+
+export FZF_ALT_C_OPTS="\
+  --walker=dir,hidden \
+  --preview 'eza --tree --all --color=always {} | head -200'"
+
+export FZF_CTRL_R_OPTS="\
+  --preview 'echo {}' --preview-window=up:3:wrap \
+  --bind 'ctrl-y:execute-silent(echo -n {2..} | pbcopy)+abort'"
+
+# ** completion still uses these functions
 _fzf_compgen_path() {
   fd --hidden --exclude .git --exclude .venv --exclude .idea . "$1"
 }
@@ -30,30 +60,30 @@ _fzf_compgen_dir() {
   fd --type=d --hidden --exclude .git --exclude .venv --exclude .idea . "$1"
 }
 
-# Key bindings for history search
-bindkey '^[[A' history-search-backward
-bindkey '^[[B' history-search-forward
+_fzf_comprun() {
+  local command=$1
+  shift
 
-# Load cargo env if exists
-[ -f "$HOME/.cargo/env" ] && source "$HOME/.cargo/env"
-
-# Shortcut for Yazi that will cd into active dir when exitin Yazi
-function y() {
-	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
-	command yazi "$@" --cwd-file="$tmp"
-	IFS= read -r -d '' cwd < "$tmp"
-	[ "$cwd" != "$PWD" ] && [ -d "$cwd" ] && builtin cd -- "$cwd"
-	command rm -f -- "$tmp"
+  case "$command" in
+    cd)           fzf --preview 'eza --tree --all --color=always {} | head -200' "$@" ;;
+    export|unset) fzf --preview "eval 'echo ${}'"         "$@" ;;
+    *)            fzf --preview "$show_file_or_dir_preview" "$@" ;;
+  esac
 }
 
-# Always work in a tmux session if Tmux is installed
-if which tmux >/dev/null 2>&1; then
-  # Check if the current environment is suitable for tmux
-  if [[ -z "$TMUX" && \
-        $TERM != "screen-256color" && \
-        $TERM != "screen" ]]; then
-    # Try to attach to the default tmux session, or create a new one if it doesn't exist
-    tmux attach -t default || tmux new -s default
+# Shortcut for Yazi that will cd into active dir when exiting
+function y() {
+  local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
+  command yazi "$@" --cwd-file="$tmp"
+  IFS= read -r -d '' cwd < "$tmp"
+  [[ "$cwd" != "$PWD" ]] && [[ -d "$cwd" ]] && builtin cd -- "$cwd"
+  command rm -f -- "$tmp"
+}
+
+# Auto-attach to tmux session
+if (( ${+commands[tmux]} )); then
+  if [[ -z "$TMUX" && $TERM != "screen-256color" && $TERM != "screen" ]]; then
+    tmux attach -t default 2>/dev/null || tmux new -s default
     exit
   fi
 fi
