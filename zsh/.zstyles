@@ -17,7 +17,7 @@ zstyle ':completion:*' cache-path "$XDG_CACHE_HOME/zsh/zcompcache"
 
 # fzf-tab
 zstyle ':fzf-tab:*' use-fzf-default-opts yes
-zstyle ':fzf-tab:*' switch-group 'n' 'p'
+zstyle ':fzf-tab:*' switch-group 'ctrl-h' 'ctrl-l'
 zstyle ':fzf-tab:*' fzf-min-height 20
 zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza --tree --all --color=always $realpath | head -200'
 zstyle ':fzf-tab:complete:ls:*' fzf-preview 'eza --tree --all --color=always $realpath | head -200'

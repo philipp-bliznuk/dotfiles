@@ -1,4 +1,5 @@
 .DS_Store
 zsh/.zplugins.zsh
+zsh/.zsh_sessions/
 *.zwc
 
