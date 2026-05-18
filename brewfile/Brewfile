@@ -30,7 +30,7 @@ brew "yazi"
 brew "yq"
 brew "zoxide"
 brew "rich"
-brew "duckdb"
+
 
 # Casks
 cask "font-jetbrains-mono-nerd-font"

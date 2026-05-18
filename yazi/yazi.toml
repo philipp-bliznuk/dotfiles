@@ -18,19 +18,6 @@ extract = [
 
 [plugin]
 prepend_previewers = [
-    { url = "*.csv", run = "duckdb" },  
-    { url = "*.tsv", run = "duckdb" },  
-    { url = "*.parquet", run = "duckdb" },  
-    { url = "*.xlsx", run = "duckdb" },  
-    { url = "*.md", run = "rich-preview" },
     { mime = "application/{*zip,tar,bzip2,7z*,rar,xz,zstd,java-archive}", run = "ouch --show-file-icons" },
-    { mime = "{text/*,application/json}", run = 'piper -- bat -p --color=always --theme="Catppuccin Mocha" "$1"' },
-    { mime = "application/sqlite3", run = 'piper -- sqlite3 "$1" ".schema --indent"' },
-]
-
-prepend_preloaders = [  
-  { url = "*.csv", run = "duckdb", multi = false },  
-  { url = "*.tsv", run = "duckdb", multi = false },  
-  { url = "*.parquet", run = "duckdb", multi = false },
-  { url = "*.xlsx", run = "duckdb", multi = false }
+    { mime = "{text/*,application/json}", run = 'piper -- bat -p --color=always "$1"' },
 ]

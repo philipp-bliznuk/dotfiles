@@ -11,5 +11,3 @@ Status:children_add(function()
 		" ",
 	})
 end, 500, Status.RIGHT)
-
-require("duckdb"):setup()

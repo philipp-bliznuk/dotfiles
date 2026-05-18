@@ -41,6 +41,19 @@ source ${zplugins}.zsh
 # Theme: load palette and apply colors
 source "$XDG_CONFIG_HOME/themes/$THEME/theme.zsh"
 
+# bat theme mapping (built-in names where available, custom .tmTheme name otherwise)
+typeset -gA BAT_THEME_MAP=(
+  catppuccin-mocha "Catppuccin Mocha"
+  dracula          "Dracula"
+  nord             "Nord"
+  gruvbox-dark     "gruvbox-dark"
+  rose-pine        "rose-pine"
+  kanagawa         "kanagawa"
+  everforest       "everforest"
+  tokyo-night      "tokyo-night"
+)
+export BAT_THEME="${BAT_THEME_MAP[$THEME]}"
+
 # FZF colors from THEME_COLORS
 export FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS \
   --color=bg+:${THEME_COLORS[surface0]},bg:${THEME_COLORS[base]},spinner:${THEME_COLORS[rosewater]},hl:${THEME_COLORS[red]} \

@@ -4,6 +4,17 @@ set -euo pipefail
 DOTFILES="$(cd "$(dirname "$0")" && pwd)"
 XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
 
+# Available themes: catppuccin-mocha, dracula, nord, rose-pine, tokyo-night, gruvbox-dark, everforest, kanagawa
+THEME="catppuccin-mocha"
+
+# Yazi flavor name mapping (yazi-rs/flavors uses different names for some themes)
+get_yazi_flavor() {
+	case "$1" in
+	everforest) echo "everforest-medium" ;;
+	*) echo "$1" ;;
+	esac
+}
+
 # Formatting
 reset_color=$(tput sgr 0)
 
@@ -46,6 +57,7 @@ link "$DOTFILES/starship/starship.toml" "$XDG_CONFIG_HOME/starship.toml"
 # Package dirs -> $XDG_CONFIG_HOME/<name>/
 packages=(
 	alacritty
+	bat
 	brewfile
 	ghostty
 	git
@@ -66,7 +78,27 @@ done
 echo ""
 success "Dotfiles symlinked."
 
+# Apply theme to config files via sed
+echo ""
+info "Applying theme: $THEME..."
+
+# .zshenv: update THEME export
+sed -i '' "s/^export THEME=\".*\"/export THEME=\"$THEME\"/" "$DOTFILES/.zshenv"
+
+# yazi/theme.toml: update flavor
+YAZI_FLAVOR="$(get_yazi_flavor "$THEME")"
+sed -i '' "s/^dark = \".*\"/dark = \"$YAZI_FLAVOR\"/" "$DOTFILES/yazi/theme.toml"
+
+success "Theme applied: $THEME"
+
+# Homebrew (must run before tool-specific steps — fresh machine may lack bat/yazi)
 echo ""
 info "Installing Homebrew packages..."
 zsh -c 'source "$HOME/.zshenv" && brew bundle'
 success "Homebrew packages installed."
+
+# Build bat theme cache (picks up custom .tmTheme symlinks)
+echo ""
+info "Building bat theme cache..."
+bat cache --build
+success "bat cache built."
