@@ -10,6 +10,7 @@ tap "oven-sh/bun"
 # Bottles
 brew "bat"
 brew "eza"
+brew "fastfetch"
 brew "fd"
 brew "fzf"
 brew "git"

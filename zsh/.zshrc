@@ -41,6 +41,11 @@ source ${zplugins}.zsh
 # Theme: load palette and apply colors
 source "$XDG_CONFIG_HOME/themes/$THEME/theme.zsh"
 
+# Export theme colors as env vars for child processes (tmux, etc.)
+for key val in "${(@kv)THEME_COLORS}"; do
+  export "THEME_${(U)key}=$val"
+done
+
 # bat theme mapping (built-in names where available, custom .tmTheme name otherwise)
 typeset -gA BAT_THEME_MAP=(
   catppuccin-mocha "Catppuccin Mocha"

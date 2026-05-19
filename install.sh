@@ -59,6 +59,7 @@ packages=(
 	alacritty
 	bat
 	brewfile
+	fastfetch
 	ghostty
 	git
 	kitty
@@ -102,3 +103,10 @@ echo ""
 info "Building bat theme cache..."
 bat cache --build
 success "bat cache built."
+
+# Apply changes: kill tmux server to pick up new env vars
+echo ""
+read -rp "Kill tmux server to apply changes? [Y/n] " answer
+if [[ "${answer:-Y}" =~ ^[Yy]$ ]]; then
+	tmux kill-server 2>/dev/null || true
+fi

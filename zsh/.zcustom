@@ -81,9 +81,7 @@ function y() {
 }
 
 # Auto-attach to tmux session
-if (( ${+commands[tmux]} )); then
-  if [[ -z "$TMUX" && $TERM != "screen-256color" && $TERM != "screen" ]]; then
-    tmux attach -t default 2>/dev/null || tmux new -s default
-    exit
-  fi
+if (( ${+commands[tmux]} )) && [[ -z "$TMUX" ]]; then
+  tmux attach -t default 2>/dev/null || tmux new -s default
+  exit
 fi

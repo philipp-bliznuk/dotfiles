@@ -9,8 +9,8 @@ defaults and consistent theming that matches the rest of the dotfiles ecosystem.
    No bloated plugin stacks or excessive keybind remapping.
 2. **Unified theming** — yazi flavors match the global `THEME` variable,
    keeping visual consistency with zsh, fzf, bat, and other tools.
-3. **bat for text previews** — routes through piper to avoid syntect background
-   color artifacts while preserving syntax highlighting.
+3. **Built-in previewer** — uses yazi's native syntect-based code previewer
+   with proper true-color support via `tmux-256color` terminal.
 4. **ouch for archives** — single tool for preview, extraction, and compression.
 
 ## File Structure
@@ -24,7 +24,6 @@ defaults and consistent theming that matches the rest of the dotfiles ecosystem.
   package.toml       Plugin/flavor dependency manifest
   plugins/
     ouch.yazi/       Archive preview + compression
-    piper.yazi/      Generic command previewer (pipes bat output)
   flavors/
     catppuccin-mocha.yazi/
     dracula.yazi/
@@ -40,15 +39,14 @@ defaults and consistent theming that matches the rest of the dotfiles ecosystem.
 
 | Content | Previewer | Details |
 |---------|-----------|---------|
-| Text, code, JSON, CSV, TOML, etc. | piper → bat | `bat -p --color=always` — no line numbers, no frame |
+| Text, code, JSON, CSV, TOML, etc. | Built-in (syntect) | Syntax highlighting via yazi flavor tmTheme |
 | Archives (zip, tar, 7z, rar, etc.) | ouch | Tree view with file icons |
 | Images | Built-in | Sixel/Kitty/iTerm2 protocol |
 | PDFs | Built-in | First page render |
 | Directories | Built-in | File listing |
 
-The piper+bat approach avoids yazi's built-in syntect renderer which shows
-unwanted background highlights on certain syntax scopes. bat suppresses
-background colors by default, giving clean output.
+The built-in syntect previewer works cleanly with `tmux-256color` terminal
+type — no background highlight artifacts.
 
 ![Syntax-highlighted preview](../assets/yazi/yazi-preview-syntax.png)
 
@@ -83,8 +81,7 @@ Available flavors: `catppuccin-mocha`, `dracula`, `nord`, `rose-pine`,
 `tokyo-night`, `gruvbox-dark`, `everforest-medium`, `kanagawa`.
 
 When running `./install.sh`, the flavor is automatically set to match the
-global `THEME` variable. bat previews also follow the global theme via the
-`BAT_THEME` environment variable exported in `.zshrc`.
+global `THEME` variable.
 
 ## Status Bar
 
@@ -103,7 +100,6 @@ ya pkg upgrade
 
 ## Dependencies
 
-- `bat` — syntax-highlighted text preview
 - `ouch` — archive list/extract/compress
 - `yazi` — the file manager itself
 
