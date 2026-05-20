@@ -1,32 +1,34 @@
-theme = dracula
-background = #000000
-background-opacity = 0.65
-background-blur-radius = 20
+# Theme (managed by install.sh)
+theme = Catppuccin Mocha
 
-font-family = JetBrainsMono Nerd Font
+# Font
+font-family = JetBrainsMono Nerd Font Mono
 font-size = 13
+font-thicken = true
+
+# Cursor (color managed by install.sh)
+cursor-color = #b4befe
 cursor-style = block
 cursor-style-blink = false
 shell-integration-features = no-cursor
-mouse-hide-while-typing = true
 
-# custom-shader = shaders/cursor_blaze.glsl
-# custom-shader = shaders/cursor_blaze_no_trail.glsl
-# custom-shader = shaders/cursor_blaze_tapered.glsl
-# custom-shader = shaders/cursor_frozen.glsl
-custom-shader = shaders/cursor_smear.glsl
-# custom-shader = shaders/cursor_smear_fade.glsl
-
+# Window
 macos-titlebar-style = hidden
 macos-option-as-alt = true
 macos-non-native-fullscreen = true
+window-save-state = always
+window-step-resize = true
 
+# Behavior
 confirm-close-surface = false
-window-decoration = true
-
+mouse-hide-while-typing = true
+clipboard-trim-trailing-spaces = true
 auto-update = check
 
-keybind = super+r=reload_config
+# Shader (uncomment one)
+# custom-shader = shaders/cursor_warp.glsl
+custom-shader = shaders/cursor_tail.glsl
+custom-shader-animation = always
 
-#Autocommands (auto attach tmux when open ghostty)
-#command = zsh --login -c "if command -v tmux >/dev/null 2>&1; then tmux attach || tmux; else zsh; fi"
+# Keybinds
+keybind = super+r=reload_config

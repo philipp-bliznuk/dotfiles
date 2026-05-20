@@ -15,6 +15,36 @@ get_yazi_flavor() {
 	esac
 }
 
+# Ghostty theme name mapping (ghostty uses Title Case names)
+get_ghostty_theme() {
+	case "$1" in
+	catppuccin-mocha) echo "Catppuccin Mocha" ;;
+	dracula) echo "Dracula" ;;
+	nord) echo "Nord" ;;
+	rose-pine) echo "Rose Pine" ;;
+	tokyo-night) echo "TokyoNight Night" ;;
+	gruvbox-dark) echo "Gruvbox Dark" ;;
+	kanagawa) echo "Kanagawa Wave" ;;
+	everforest) echo "Everforest Dark Hard" ;;
+	*) echo "Catppuccin Mocha" ;;
+	esac
+}
+
+# Ghostty cursor color: most prevalent accent per theme
+get_ghostty_cursor_color() {
+	case "$1" in
+	catppuccin-mocha) echo "#b4befe" ;; # lavender
+	dracula) echo "#bd93f9" ;;          # purple
+	nord) echo "#88c0d0" ;;             # frost
+	rose-pine) echo "#c4a7e7" ;;        # iris
+	tokyo-night) echo "#7aa2f7" ;;      # blue
+	gruvbox-dark) echo "#fe8019" ;;     # orange
+	everforest) echo "#a7c080" ;;       # green
+	kanagawa) echo "#7e9cd8" ;;         # wave blue
+	*) echo "#b4befe" ;;
+	esac
+}
+
 # Formatting
 reset_color=$(tput sgr 0)
 
@@ -89,6 +119,12 @@ sed -i '' "s/^export THEME=\".*\"/export THEME=\"$THEME\"/" "$DOTFILES/.zshenv"
 # yazi/theme.toml: update flavor
 YAZI_FLAVOR="$(get_yazi_flavor "$THEME")"
 sed -i '' "s/^dark = \".*\"/dark = \"$YAZI_FLAVOR\"/" "$DOTFILES/yazi/theme.toml"
+
+# ghostty/config: update theme and cursor color
+GHOSTTY_THEME="$(get_ghostty_theme "$THEME")"
+GHOSTTY_CURSOR="$(get_ghostty_cursor_color "$THEME")"
+sed -i '' "s/^theme = .*/theme = $GHOSTTY_THEME/" "$DOTFILES/ghostty/config"
+sed -i '' "s/^cursor-color = .*/cursor-color = $GHOSTTY_CURSOR/" "$DOTFILES/ghostty/config"
 
 success "Theme applied: $THEME"
 

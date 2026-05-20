@@ -66,3 +66,7 @@ export THEME="catppuccin-mocha"
 
 # Evalcache
 export ZSH_EVALCACHE_DIR="$XDG_CACHE_HOME/zsh/.zsh-evalcache"
+
+# Opencode
+export OPENCODE_ENABLE_EXA=1
+export OPENCODE_EXPERIMENTAL_LSP_TOOL=true
