@@ -81,6 +81,8 @@ echo ""
 
 # Misc files (custom destinations outside $XDG_CONFIG_HOME/<dir>/)
 link "$DOTFILES/.zshenv" "$HOME/.zshenv"
+mkdir -p "$XDG_CONFIG_HOME/jj"
+link "$DOTFILES/jj/config.toml" "$XDG_CONFIG_HOME/jj/config.toml"
 
 # Package dirs -> $XDG_CONFIG_HOME/<name>/
 packages=(
