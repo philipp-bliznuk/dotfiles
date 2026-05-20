@@ -1,0 +1,82 @@
+# Pure zsh prompt — themed via THEME_COLORS
+# No external dependencies (no starship, no subprocess forks)
+
+# Precise timing via zsh/datetime module
+zmodload zsh/datetime
+
+# --- Command duration tracking ---
+_cmd_start=0
+_cmd_duration=""
+
+function preexec() { _cmd_start=$EPOCHREALTIME }
+
+function precmd() {
+  if (( _cmd_start > 0 )); then
+    local elapsed=$(( EPOCHREALTIME - _cmd_start ))
+    _cmd_start=0
+    local secs=${elapsed%.*}
+    if (( secs >= 120 )); then
+      _cmd_duration=" $(( secs / 60 ))m$(( secs % 60 ))s"
+    elif (( secs >= 2 )); then
+      _cmd_duration=" ${secs}s"
+    else
+      _cmd_duration=""
+    fi
+  fi
+}
+
+# --- Git branch (reads .git/HEAD directly — no fork) ---
+function _prompt_git_branch() {
+  local branch head_file dir=$PWD
+
+  # Walk up to find .git
+  while [[ -n "$dir" ]]; do
+    [[ -f "$dir/.git/HEAD" ]] && { head_file="$dir/.git/HEAD"; break }
+    dir="${dir%/*}"
+  done
+  [[ -z "$head_file" ]] && return
+
+  read -r branch < "$head_file"
+  if [[ "$branch" == ref:* ]]; then
+    branch="${branch#ref: refs/heads/}"
+  else
+    branch="${branch[1,7]}…"
+  fi
+  print -n " %F{${THEME_COLORS[peach]}}[${branch}]%f"
+}
+
+# --- Prompt ---
+setopt prompt_subst
+
+PROMPT='
+%F{${THEME_COLORS[blue]}}%B%1~%b%f$(_prompt_git_branch)
+%(?.%F{${THEME_COLORS[green]}}.%F{${THEME_COLORS[red]}})❯%f '
+
+RPROMPT='%F{${THEME_COLORS[overlay1]}}${_cmd_duration}%f'
+
+# --- Transient prompt (collapse previous prompts to minimal ❯) ---
+function _transient_prompt_hook() {
+  emulate -L zsh
+  [[ $CONTEXT == start ]] || return 0
+
+  while true; do
+    zle .recursive-edit
+    local -i ret=$?
+    [[ $ret == 0 && $KEYS == $'\4' ]] || break
+    [[ -o ignore_eof ]] || exit 0
+  done
+
+  local saved_prompt=$PROMPT saved_rprompt=$RPROMPT
+  PROMPT='%(?.%F{${THEME_COLORS[green]}}.%F{${THEME_COLORS[red]}})❯%f '
+  RPROMPT=''
+  zle .reset-prompt
+  PROMPT=$saved_prompt
+  RPROMPT=$saved_rprompt
+
+  if ((ret)); then zle .send-break; else zle .accept-line; fi
+  return ret
+}
+
+zle -N _transient_prompt_hook
+autoload -Uz add-zle-hook-widget
+add-zle-hook-widget zle-line-init _transient_prompt_hook

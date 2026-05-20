@@ -71,8 +71,10 @@ export FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS \
 (( ${+FAST_THEME_NAME} )) && [[ "$FAST_THEME_NAME" != "$THEME" ]] && \
   fast-theme "$XDG_CONFIG_HOME/themes/$THEME/theme.ini" 2>/dev/null
 
-# Shell completions (cached via evalcache) — eager: affects prompt/keybinds/cd
-_evalcache starship init zsh
+# Prompt (pure zsh, no external deps)
+[[ -f ${ZDOTDIR}/.zprompt ]] && source ${ZDOTDIR}/.zprompt
+
+# Shell completions (cached via evalcache) — eager: affects keybinds/cd
 _evalcache fzf --zsh
 _evalcache zoxide init --cmd=cd zsh
 
