@@ -2,4 +2,6 @@
 zsh/.zplugins.zsh
 zsh/.zsh_sessions/
 *.zwc
+kitty/current-theme.conf
+alacritty/current-theme.toml
 

@@ -126,6 +126,12 @@ GHOSTTY_CURSOR="$(get_ghostty_cursor_color "$THEME")"
 sed -i '' "s/^theme = .*/theme = $GHOSTTY_THEME/" "$DOTFILES/ghostty/config"
 sed -i '' "s/^cursor-color = .*/cursor-color = $GHOSTTY_CURSOR/" "$DOTFILES/ghostty/config"
 
+# kitty/current-theme.conf: symlink to active theme
+link "$DOTFILES/themes/$THEME/theme.kitty.conf" "$DOTFILES/kitty/current-theme.conf"
+
+# alacritty/current-theme.toml: symlink to active theme
+link "$DOTFILES/themes/$THEME/theme.alacritty.toml" "$DOTFILES/alacritty/current-theme.toml"
+
 success "Theme applied: $THEME"
 
 # Homebrew (must run before tool-specific steps — fresh machine may lack bat/yazi)
