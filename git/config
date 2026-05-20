@@ -1,0 +1,93 @@
+[init]
+	defaultBranch = master
+
+[core]
+	editor = nvim
+	pager = delta
+	precomposeUnicode = true
+	ignoreCase = true
+
+[user]
+	name = Philipp Bliznuk
+	email = philipp.bliznuk@gmail.com
+	username = philipp-bliznuk
+	signingkey = 2F728CC11D7C6163
+
+[commit]
+	gpgsign = true
+
+[pull]
+	rebase = true
+
+[push]
+	autoSetupRemote = true
+
+[fetch]
+	prune = true
+	pruneTags = true
+	all = true
+
+[rebase]
+	backend = merge
+	autoSquash = true
+
+[rerere]
+	enabled = true
+
+[merge]
+	tool = vimdiff
+	conflictstyle = zdiff3
+
+[mergetool]
+	prompt = false
+
+[diff]
+	colorMoved = zebra
+	tool = vimdiff
+
+[difftool]
+	prompt = false
+
+[branch]
+	sort = -committerdate
+
+[tag]
+	sort = -version:refname
+
+[column]
+	ui = auto
+
+[blame]
+	coloring = repeatedLines
+
+[color]
+	ui = auto
+
+[color "branch"]
+	current = yellow bold
+	local = green bold
+	remote = cyan bold
+
+[color "diff"]
+	meta = yellow bold
+	frag = magenta bold
+	old = red bold
+	new = green bold
+	whitespace = red reverse
+
+[color "status"]
+	added = green bold
+	changed = magenta bold
+	untracked = red bold
+
+[web]
+	browser = brave
+
+[delta]
+	features = line-numbers decorations
+	line-numbers = true
+
+[delta "decorations"]
+	file-decoration-style = blue box
+	hunk-header-decoration-style = magenta box
+	line-numbers-right-format = "{np:^4}│ "
