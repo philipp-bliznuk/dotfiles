@@ -1,18 +1,17 @@
 #!/bin/bash
 
-update_media() {
-    STATE="$(echo "$INFO" | jq -r '.state')"
+# Event-driven media display via media-control stream.
+# Receives TITLE, ARTIST, PLAYING env vars from media_stream_changed event.
 
-    if [ "$STATE" = "playing" ]; then
-        MEDIA="$(echo "$INFO" | jq -r '.artist + " - " + .title')"
-        sketchybar --set $NAME label="$MEDIA" drawing=on
-    else
-        sketchybar --set $NAME drawing=off
-    fi
-}
+# Update label if we have title info
+if [[ -n "$TITLE" ]]; then
+	MEDIA="${ARTIST:+$ARTIST - }$TITLE"
+	sketchybar --set "$NAME" label="$MEDIA"
+fi
 
-case "$SENDER" in
-"media_change")
-    update_media
-    ;;
-esac
+# Only toggle drawing when PLAYING state is explicitly provided
+if [[ "$PLAYING" == "true" ]]; then
+	sketchybar --set "$NAME" drawing=on
+elif [[ "$PLAYING" == "false" ]]; then
+	sketchybar --set "$NAME" drawing=off
+fi

@@ -2,50 +2,59 @@
 
 source "$CONFIG_DIR/settings.sh"
 
+LOCKFILE="/tmp/sketchybar_brew.lock"
+
 refresh() {
-    zsh -c 'brew update &>/dev/null'
-    OUTDATED=$(zsh -c 'brew outdated --verbose')
+	# Prevent concurrent brew processes
+	if [[ -f "$LOCKFILE" ]]; then
+		return
+	fi
+	touch "$LOCKFILE"
+	trap 'rm -f "$LOCKFILE"' RETURN
 
-    if [ -z "$OUTDATED" ]; then
-        return
-    fi
+	OUTDATED=$(/bin/zsh -c 'brew outdated --verbose 2>/dev/null')
 
-    args=(--set $NAME icon.color=$RED)
-    if $(sketchybar --query $NAME | jq '.popup.items | length != 0'); then
-        args+=(--remove '/brew.popup\.*/')
-    fi
+	if [[ -z "$OUTDATED" ]]; then
+		sketchybar --set "$NAME" icon.color=$ICON_COLOR
+		return
+	fi
 
-    COUNTER=0
-    while IFS= read -r package; do
-        args+=(
-            --add item "$NAME".popup.$COUNTER popup."$NAME"
-            --set "$NAME".popup.$COUNTER label="${package}"
-        )
-        COUNTER=$((COUNTER + 1))
-    done <<<"$OUTDATED"
+	args=(--set "$NAME" icon.color=$RED)
+	if $(sketchybar --query "$NAME" | jq '.popup.items | length != 0'); then
+		args+=(--remove '/brew.popup\..*/')
+	fi
 
-    sketchybar -m "${args[@]}" >/dev/null
+	COUNTER=0
+	while IFS= read -r package; do
+		args+=(
+			--add item "$NAME".popup.$COUNTER popup."$NAME"
+			--set "$NAME".popup.$COUNTER label="${package}"
+		)
+		COUNTER=$((COUNTER + 1))
+	done <<<"$OUTDATED"
+
+	sketchybar -m "${args[@]}" >/dev/null
 }
 
 update() {
-    osascript -e 'display notification "Starting Brew package updates..." with title "Package Updates"'
-    zsh -c 'brew upgrade >/dev/null && brew cleanup >/dev/null'
-    osascript -e 'display notification "Brew packages updated" with title "Package Updates"'
-    sketchybar -m --set $NAME icon.color=$ICON_COLOR --remove '/brew.popup\.*/' >/dev/null
+	osascript -e 'display notification "Starting Brew package updates..." with title "Package Updates"'
+	/bin/zsh -c 'brew upgrade >/dev/null 2>&1 && brew cleanup >/dev/null 2>&1'
+	osascript -e 'display notification "Brew packages updated" with title "Package Updates"'
+	sketchybar -m --set "$NAME" icon.color=$ICON_COLOR --remove '/brew.popup\..*/' >/dev/null
 }
 
 case "$SENDER" in
 "routine" | "forced")
-    refresh
-    ;;
+	refresh
+	;;
 "mouse.entered")
-    popup on
-    ;;
+	popup on
+	;;
 "mouse.exited" | "mouse.exited.global")
-    popup off
-    ;;
+	popup off
+	;;
 "mouse.clicked")
-    popup off
-    update
-    ;;
+	popup off
+	update
+	;;
 esac

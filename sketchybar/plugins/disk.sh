@@ -1,3 +1,4 @@
 #!/bin/bash
 
-sketchybar --set $NAME label=$(df -H | grep -E '^(/dev/disk3s5).' | awk '{ printf ("%s\n", $4) }')
+AVAIL=$(df -H / | awk 'NR==2{print $4}')
+sketchybar --set "$NAME" label="$AVAIL"

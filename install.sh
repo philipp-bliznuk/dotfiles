@@ -146,6 +146,13 @@ info "Building bat theme cache..."
 bat cache --build
 success "bat cache built."
 
+# macOS: auto-hide native menu bar (sketchybar replaces it)
+echo ""
+info "Configuring macOS settings..."
+defaults write .GlobalPreferences _HIHideMenuBar -bool true
+defaults write .GlobalPreferences AppleMenuBarVisibleInFullscreen -bool false
+success "Menu bar set to auto-hide (takes effect after logout/reboot)."
+
 # Apply changes: kill tmux server to pick up new env vars
 echo ""
 read -rp "Kill tmux server to apply changes? [Y/n] " answer
