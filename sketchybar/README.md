@@ -49,7 +49,6 @@ sketchybar/
 ## Features
 
 - **Dynamic theming** — `colors.sh` self-parses `THEME` from `.zshenv` at runtime and loads hex values from `~/.config/themes/$THEME/theme.zsh`. No install-time dependency.
-- **Wake recovery** — External `sleepwatcher` daemon restarts sketchybar after displays stabilize on wake (macOS Tahoe WindowServer bug workaround).
 - **Poll-based media** — `media-control get` every 1s. No background daemons. Never toggles `drawing` state (avoids WindowServer render caching bug).
 - **Performant plugins** — CPU via `ps`+awk (instant), RAM via `vm_stat` (instant), network rates via file-based delta (no `sleep`), VPN via `mullvad status` CLI (no curl).
 - **Brew management** — Hover popup shows outdated packages, click to upgrade. Lockfile prevents concurrent processes.

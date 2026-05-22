@@ -81,7 +81,6 @@ echo ""
 
 # Misc files (custom destinations outside $XDG_CONFIG_HOME/<dir>/)
 link "$DOTFILES/.zshenv" "$HOME/.zshenv"
-link "$DOTFILES/.wakeup" "$HOME/.wakeup"
 mkdir -p "$XDG_CONFIG_HOME/jj"
 link "$DOTFILES/jj/config.toml" "$XDG_CONFIG_HOME/jj/config.toml"
 
