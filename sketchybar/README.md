@@ -16,7 +16,7 @@ Minimal, themed status bar for macOS replacing the native menu bar. Displays sys
 
 ```
 sketchybar/
-├── sketchybarrc          # Entry point: bar config, item loading, wake fix
+├── sketchybarrc          # Entry point: bar config, item loading
 ├── colors.sh             # Runtime theme parser (reads from themes/$THEME/)
 ├── settings.sh           # Font, padding, defaults, popup helper
 ├── items/                # Item definitions (position, frequency, icon)
@@ -38,7 +38,6 @@ sketchybar/
     ├── disk.sh
     ├── input.sh
     ├── media.sh
-    ├── media_stream.sh
     ├── mic.sh
     ├── network_rates.sh
     ├── ram.sh
@@ -50,8 +49,8 @@ sketchybar/
 ## Features
 
 - **Dynamic theming** — `colors.sh` self-parses `THEME` from `.zshenv` at runtime and loads hex values from `~/.config/themes/$THEME/theme.zsh`. No install-time dependency.
-- **Wake recovery** — Hidden `wake_fix` item subscribes to `system_woke`, forces bar re-render after lid open (macOS 26 timing bug workaround).
-- **Event-driven media** — Background daemon (`media_stream.sh`) pipes `media-control stream` through jq, fires custom sketchybar event. Zero polling, instant updates.
+- **Wake recovery** — External `sleepwatcher` daemon restarts sketchybar after displays stabilize on wake (macOS Tahoe WindowServer bug workaround).
+- **Poll-based media** — `media-control get` every 1s. No background daemons. Never toggles `drawing` state (avoids WindowServer render caching bug).
 - **Performant plugins** — CPU via `ps`+awk (instant), RAM via `vm_stat` (instant), network rates via file-based delta (no `sleep`), VPN via `mullvad status` CLI (no curl).
 - **Brew management** — Hover popup shows outdated packages, click to upgrade. Lockfile prevents concurrent processes.
 - **Hot-reload** — `hotload on` enables live config changes during development.
@@ -65,6 +64,6 @@ sketchybar/
 ## Dependencies
 
 - [sketchybar](https://github.com/FelixKratz/SketchyBar)
-- [media-control](https://formulae.brew.sh/formula/media-control) (media streaming)
+- [media-control](https://formulae.brew.sh/formula/media-control) (now-playing polling)
 - [SwitchAudioSource](https://formulae.brew.sh/formula/switchaudio-osx) (mic/audio)
 - JetBrainsMono Nerd Font

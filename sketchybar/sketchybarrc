@@ -7,13 +7,6 @@ source "$CONFIG_DIR/settings.sh"
 
 sketchybar --bar "${bar[@]}" --default "${default[@]}"
 
-# --- Wake Recovery ---
-# Fixes items not rendering after lid open (macOS timing issue)
-sketchybar --add item wake_fix left \
-	--set wake_fix drawing=off updates=off \
-	script='sleep 1 && sketchybar --bar display=main display=all' \
-	--subscribe wake_fix system_woke
-
 # --- Left Side Items ---
 source "$ITEM_DIR/disk.sh"
 source "$ITEM_DIR/ram.sh"
