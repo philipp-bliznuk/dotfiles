@@ -9,6 +9,7 @@ bar=(
 	height=35
 	color=$BAR_COLOR
 	border_color=$BAR_BORDER_COLOR
+	display=main
 )
 
 default=(
