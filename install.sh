@@ -46,6 +46,11 @@ link "$DOTFILES/.zshenv" "$HOME/.zshenv"
 mkdir -p "$XDG_CONFIG_HOME/jj"
 link "$DOTFILES/jj/config.toml" "$XDG_CONFIG_HOME/jj/config.toml"
 
+# Containers (individual files — dir has podman machine state we must preserve)
+mkdir -p "$XDG_CONFIG_HOME/containers"
+link "$DOTFILES/containers/containers.conf" "$XDG_CONFIG_HOME/containers/containers.conf"
+link "$DOTFILES/containers/registries.conf" "$XDG_CONFIG_HOME/containers/registries.conf"
+
 # Package dirs -> $XDG_CONFIG_HOME/<name>/
 packages=(
 	alacritty
