@@ -14,69 +14,69 @@ docstring-code-format = true
 [lint]
 preview = true
 select = [
-    "A",      # flake8-builtins
-    "ANN",    # flake8-annotations
-    "ARG",    # flake8-unused-arguments
-    "ASYNC",  # flake8-async
-    "B",      # flake8-bugbear
-    "BLE",    # flake8-blind-except
-    "C4",     # flake8-comprehensions
-    "C90",    # mccabe
-    "COM",    # flake8-commas
-    "D",      # pydocstyle
-    "DTZ",    # flake8-datetimez
-    "E",      # pycodestyle error
-    "EM",     # flake8-errmsg
-    "ERA",    # eradicate
-    "EXE",    # flake8-executable
-    "F",      # pyflakes
-    "FA",     # flake8-future-annotations
-    "FBT",    # flake8-boolean-trap
-    "FLY",    # flynt
-    "FURB",   # refurb
-    "G",      # flake8-logging-format
-    "I",      # isort
-    "ICN",    # flake8-import-conventions
-    "INP",    # flake8-no-pep420
-    "ISC",    # flake8-implicit-str-concat
-    "LOG",    # flake8-logging
-    "N",      # pep8-naming
-    "PERF",   # perflint
-    "PGH",    # pygrep-hooks
-    "PIE",    # flake8-pie
-    "PLC",    # pylint convention
-    "PLE",    # pylint error
-    "PLR",    # pylint refactor
-    "PLW",    # pylint warning
-    "PT",     # flake8-pytest-style
-    "PTH",    # flake8-use-pathlib
-    "PYI",    # flake8-pyi
-    "Q",      # flake8-quotes
-    "RET",    # flake8-return
-    "RSE",    # flake8-raise
-    "RUF",    # ruff-specific
-    "S",      # flake8-bandit
-    "SIM",    # flake8-simplify
-    "SLF",    # flake8-self
-    "SLOT",   # flake8-slots
-    "TC",     # flake8-type-checking
-    "TD",     # flake8-todos
-    "TID",    # flake8-tidy-imports
-    "T10",    # flake8-debugger
-    "T20",    # flake8-print
-    "TRY",    # tryceratops
-    "UP",     # pyupgrade
-    "W",      # pycodestyle warning
-    "YTT",    # flake8-2020
+    "A",     # flake8-builtins
+    "ANN",   # flake8-annotations
+    "ARG",   # flake8-unused-arguments
+    "ASYNC", # flake8-async
+    "B",     # flake8-bugbear
+    "BLE",   # flake8-blind-except
+    "C4",    # flake8-comprehensions
+    "C90",   # mccabe
+    "COM",   # flake8-commas
+    "D",     # pydocstyle
+    "DTZ",   # flake8-datetimez
+    "E",     # pycodestyle error
+    "EM",    # flake8-errmsg
+    "ERA",   # eradicate
+    "EXE",   # flake8-executable
+    "F",     # pyflakes
+    "FA",    # flake8-future-annotations
+    "FBT",   # flake8-boolean-trap
+    "FLY",   # flynt
+    "FURB",  # refurb
+    "G",     # flake8-logging-format
+    "I",     # isort
+    "ICN",   # flake8-import-conventions
+    "INP",   # flake8-no-pep420
+    "ISC",   # flake8-implicit-str-concat
+    "LOG",   # flake8-logging
+    "N",     # pep8-naming
+    "PERF",  # perflint
+    "PGH",   # pygrep-hooks
+    "PIE",   # flake8-pie
+    "PLC",   # pylint convention
+    "PLE",   # pylint error
+    "PLR",   # pylint refactor
+    "PLW",   # pylint warning
+    "PT",    # flake8-pytest-style
+    "PTH",   # flake8-use-pathlib
+    "PYI",   # flake8-pyi
+    "Q",     # flake8-quotes
+    "RET",   # flake8-return
+    "RSE",   # flake8-raise
+    "RUF",   # ruff-specific
+    "S",     # flake8-bandit
+    "SIM",   # flake8-simplify
+    "SLF",   # flake8-self
+    "SLOT",  # flake8-slots
+    "TC",    # flake8-type-checking
+    "TD",    # flake8-todos
+    "TID",   # flake8-tidy-imports
+    "T10",   # flake8-debugger
+    "T20",   # flake8-print
+    "TRY",   # tryceratops
+    "UP",    # pyupgrade
+    "W",     # pycodestyle warning
+    "YTT",   # flake8-2020
 ]
 ignore = [
-    "COM812",  # missing-trailing-comma (conflicts with formatter)
-    "ISC001",  # single-line-implicit-str-concat (conflicts with formatter)
-    "D100",    # undocumented-public-module
-    "D104",    # undocumented-public-package
-    "D105",    # undocumented-magic-method
-    "D107",    # undocumented-public-init
-    "TD003",   # missing-todo-link
+    "COM812", # missing-trailing-comma (conflicts with formatter)
+    "ISC001", # single-line-implicit-str-concat (conflicts with formatter)
+    "D100",   # undocumented-public-module
+    "D104",   # undocumented-public-package
+    "D105",   # undocumented-magic-method
+    "D107",   # undocumented-public-init
+    "TD003",  # missing-todo-link
 ]
 
 [lint.per-file-ignores]

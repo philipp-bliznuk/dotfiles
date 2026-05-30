@@ -5,6 +5,11 @@ ITEM_DIR="$CONFIG_DIR/items"
 
 source "$CONFIG_DIR/settings.sh"
 
+# Kill previous media stream daemon
+pkill -f "media-stream.sh" 2>/dev/null
+pkill -f "media-control stream" 2>/dev/null
+sleep 0.2
+
 sketchybar --bar "${bar[@]}" --default "${default[@]}"
 
 # --- Left Side Items ---
@@ -24,3 +29,7 @@ source "$ITEM_DIR/brew.sh"
 
 sketchybar --hotload on
 sketchybar --update
+
+# Launch media stream daemon
+"$PLUGIN_DIR/media-stream.sh" &
+disown

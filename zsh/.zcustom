@@ -36,7 +36,7 @@ function zvm_after_lazy_keybindings() {
 show_file_or_dir_preview="if [ -d {} ]; then eza --tree --all --color=always {} | head -200; else bat -n --color=always --line-range :500 {}; fi"
 
 export FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS \
-  --walker-skip=.git,.venv,.idea,node_modules,target"
+  --walker-skip=.git,.venv,.idea,node_modules,target,__pycache__,.ruff_cache,.DS_Store"
 
 export FZF_CTRL_T_OPTS="\
   --walker=file,dir,hidden \
@@ -53,11 +53,11 @@ export FZF_CTRL_R_OPTS="\
 
 # ** completion still uses these functions
 _fzf_compgen_path() {
-  fd --hidden --exclude .git --exclude .venv --exclude .idea . "$1"
+  fd --hidden --exclude .git --exclude .venv --exclude .idea --exclude node_modules --exclude target --exclude __pycache__ --exclude .ruff_cache --exclude .DS_Store . "$1"
 }
 
 _fzf_compgen_dir() {
-  fd --type=d --hidden --exclude .git --exclude .venv --exclude .idea . "$1"
+  fd --type=d --hidden --exclude .git --exclude .venv --exclude .idea --exclude node_modules --exclude target --exclude __pycache__ --exclude .ruff_cache --exclude .DS_Store . "$1"
 }
 
 _fzf_comprun() {

@@ -56,8 +56,8 @@ sketchybar/
 
 ## Layout
 
-| Left | Right |
-|------|-------|
+| Left                                 | Right                                                           |
+| ------------------------------------ | --------------------------------------------------------------- |
 | Disk, RAM, CPU, Network rates, Media | Brew, Mic, Volume, VPN, WiFi, Battery, Input language, Datetime |
 
 ## Dependencies

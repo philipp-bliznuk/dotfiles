@@ -47,33 +47,34 @@ counts — the full init chain completes in ~60ms wall-clock time.
 
 ## Performance Strategy
 
-| Technique | Savings | Details |
-|-----------|---------|---------|
-| Static plugin bundle | ~50ms | `antidote bundle` runs only when `.zplugins` changes |
-| evalcache | ~200ms cold | Caches `starship init`, `fzf --zsh`, `zoxide init` output |
-| Deferred completions | ~120ms cold | uv/uvx/jj/podman load on first keypress, not startup |
-| Antidote zcompile | ~5ms | Pre-compiles plugin scripts to wordcode (`.zwc`) |
-| Plugin deferral | ~30ms | fzf-tab, F-Sy-H, autosuggestions load after prompt |
-| Static brew shellenv | ~30-50ms | Hardcoded Homebrew paths instead of `eval $(brew shellenv)` |
-| `GPG_TTY=$TTY` | ~3-5ms | Zsh builtin instead of `$(tty)` subprocess |
-| `(( ${+commands[...]} ))` | ~1ms | Hash table lookup instead of `command -v` fork |
+| Technique                 | Savings     | Details                                                     |
+| ------------------------- | ----------- | ----------------------------------------------------------- |
+| Static plugin bundle      | ~50ms       | `antidote bundle` runs only when `.zplugins` changes        |
+| evalcache                 | ~200ms cold | Caches `starship init`, `fzf --zsh`, `zoxide init` output   |
+| Deferred completions      | ~120ms cold | uv/uvx/jj/podman load on first keypress, not startup        |
+| Antidote zcompile         | ~5ms        | Pre-compiles plugin scripts to wordcode (`.zwc`)            |
+| Plugin deferral           | ~30ms       | fzf-tab, F-Sy-H, autosuggestions load after prompt          |
+| Static brew shellenv      | ~30-50ms    | Hardcoded Homebrew paths instead of `eval $(brew shellenv)` |
+| `GPG_TTY=$TTY`            | ~3-5ms      | Zsh builtin instead of `$(tty)` subprocess                  |
+| `(( ${+commands[...]} ))` | ~1ms        | Hash table lookup instead of `command -v` fork              |
 
 **Benchmark results** (Apple Silicon, warm cache):
+
 - Wall clock: ~60ms average
 - zprof total: ~30ms function time
 - Largest item: evalcache sourcing (28ms, unavoidable file reads)
 
 ## Plugin Stack
 
-| Plugin | Role | Loading |
-|--------|------|---------|
-| [evalcache](https://github.com/mroth/evalcache) | Cache slow `eval "$(cmd)"` calls | Eager |
-| [ez-compinit](https://github.com/mattmc3/ez-compinit) | Lazy compinit (once daily) | Eager |
-| [zsh-completions](https://github.com/zsh-users/zsh-completions) | Extra completion definitions | fpath only |
-| [fzf-tab](https://github.com/Aloxaf/fzf-tab) | Replace zsh menu with fzf | Deferred |
-| [fast-syntax-highlighting](https://github.com/zdharma-continuum/fast-syntax-highlighting) | Syntax coloring with catppuccin theme | Deferred |
-| [zsh-autosuggestions](https://github.com/zsh-users/zsh-autosuggestions) | Fish-like inline suggestions | Deferred |
-| [zsh-vi-mode](https://github.com/jeffreytse/zsh-vi-mode) | Full vim keybindings | Eager (lazy keybinds) |
+| Plugin                                                                                    | Role                                  | Loading               |
+| ----------------------------------------------------------------------------------------- | ------------------------------------- | --------------------- |
+| [evalcache](https://github.com/mroth/evalcache)                                           | Cache slow `eval "$(cmd)"` calls      | Eager                 |
+| [ez-compinit](https://github.com/mattmc3/ez-compinit)                                     | Lazy compinit (once daily)            | Eager                 |
+| [zsh-completions](https://github.com/zsh-users/zsh-completions)                           | Extra completion definitions          | fpath only            |
+| [fzf-tab](https://github.com/Aloxaf/fzf-tab)                                              | Replace zsh menu with fzf             | Deferred              |
+| [fast-syntax-highlighting](https://github.com/zdharma-continuum/fast-syntax-highlighting) | Syntax coloring with catppuccin theme | Deferred              |
+| [zsh-autosuggestions](https://github.com/zsh-users/zsh-autosuggestions)                   | Fish-like inline suggestions          | Deferred              |
+| [zsh-vi-mode](https://github.com/jeffreytse/zsh-vi-mode)                                  | Full vim keybindings                  | Eager (lazy keybinds) |
 
 ## Theming
 
@@ -88,6 +89,7 @@ Available themes: `catppuccin-mocha`, `dracula`, `nord`, `rose-pine`,
 `tokyo-night`, `gruvbox-dark`, `everforest`, `kanagawa`.
 
 Each theme provides:
+
 - `theme.zsh` — `THEME_COLORS` associative array (26 semantic color keys)
 - `theme.ini` — F-Sy-H INI for syntax highlighting
 
@@ -103,12 +105,14 @@ from `$THEME_COLORS`. Switching themes is a one-line change + `exec zsh`.
 Full vi editing with `zsh-vi-mode` plus ergonomic additions:
 
 **Insert mode** (`zvm_after_init`):
+
 - Arrow up/down — prefix history search
 - Ctrl+R — fzf fuzzy history
 - Ctrl+T — fzf file picker
 - Option+C (Mac `c`) — fzf cd
 
 **Normal mode** (`zvm_after_lazy_keybindings`):
+
 - `H`/`L` — beginning/end of line
 - `Y` — yank to end of line
 - `Ctrl+h`/`Ctrl+l` — word navigation
@@ -133,6 +137,7 @@ excluded directories. Previews powered by `bat` (files) and `eza --tree`
 ### fzf-tab Completion Previews
 
 Tab completion is fully replaced by fzf with contextual previews:
+
 - `cd <TAB>` — directory tree preview
 - `kill <TAB>` — process info
 - `export <TAB>` — variable value

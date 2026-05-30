@@ -37,13 +37,13 @@ defaults and consistent theming that matches the rest of the dotfiles ecosystem.
 
 ## Preview Strategy
 
-| Content | Previewer | Details |
-|---------|-----------|---------|
-| Text, code, JSON, CSV, TOML, etc. | Built-in (syntect) | Syntax highlighting via yazi flavor tmTheme |
-| Archives (zip, tar, 7z, rar, etc.) | ouch | Tree view with file icons |
-| Images | Built-in | Sixel/Kitty/iTerm2 protocol |
-| PDFs | Built-in | First page render |
-| Directories | Built-in | File listing |
+| Content                            | Previewer          | Details                                     |
+| ---------------------------------- | ------------------ | ------------------------------------------- |
+| Text, code, JSON, CSV, TOML, etc.  | Built-in (syntect) | Syntax highlighting via yazi flavor tmTheme |
+| Archives (zip, tar, 7z, rar, etc.) | ouch               | Tree view with file icons                   |
+| Images                             | Built-in           | Sixel/Kitty/iTerm2 protocol                 |
+| PDFs                               | Built-in           | First page render                           |
+| Directories                        | Built-in           | File listing                                |
 
 The built-in syntect previewer works cleanly with `tmux-256color` terminal
 type — no background highlight artifacts.
@@ -54,12 +54,12 @@ type — no background highlight artifacts.
 
 ## Custom Keybindings
 
-| Key | Action |
-|-----|--------|
-| `!` | Open `$SHELL` in current directory (blocking) |
-| `C` | Compress selected files with ouch |
-| `X` | Extract hovered archive here |
-| `Esc` | Cancel input |
+| Key   | Action                                        |
+| ----- | --------------------------------------------- |
+| `!`   | Open `$SHELL` in current directory (blocking) |
+| `C`   | Compress selected files with ouch             |
+| `X`   | Extract hovered archive here                  |
+| `Esc` | Cancel input                                  |
 
 ## Manager Settings
 
