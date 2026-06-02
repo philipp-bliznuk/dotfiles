@@ -1,0 +1,345 @@
+{
+  // ═══════════ Core ═══════════
+  "vim_mode": true,
+  "vim": {
+    "use_system_clipboard": "always",
+    "use_smartcase_find": true,
+    "use_regex_search": true,
+    "gdefault": true,
+    "toggle_relative_line_numbers": true,
+    "highlight_on_yank_duration": 200
+  },
+  "base_keymap": "JetBrains",
+
+  // ═══════════ Appearance ═══════════
+  "theme": "Tokyo Night",
+  "buffer_font_family": "JetBrainsMono Nerd Font",
+  "buffer_font_size": 14,
+  "buffer_font_features": { "calt": true, "liga": true },
+  "ui_font_family": "JetBrainsMono Nerd Font",
+  "ui_font_size": 14,
+  "cursor_blink": false,
+  "current_line_highlight": "all",
+  "show_whitespaces": "selection",
+  "colorize_brackets": true,
+
+  // ═══════════ Editor Behavior ═══════════
+  "autosave": "off",
+  "format_on_save": "on",
+  "ensure_final_newline_on_save": true,
+  "remove_trailing_whitespace_on_save": true,
+  "extend_comment_on_newline": false,
+  "close_on_file_delete": true,
+  "tab_size": 4,
+  "soft_wrap": "prefer_line",
+  "preferred_line_length": 120,
+  "scroll_beyond_last_line": "vertical_scroll_margin",
+  "vertical_scroll_margin": 10,
+
+  // ═══════════ Completion & Predictions ═══════════
+  "completion_menu_item_kind": "symbol",
+
+  // ═══════════ Diagnostics ═══════════
+  "diagnostics": {
+    "inline": { "enabled": true }
+  },
+
+  // ═══════════ Gutter ═══════════
+  "gutter": {
+    "line_numbers": true,
+    "folds": true,
+    "runnables": true
+  },
+
+  // ═══════════ Indent Guides ═══════════
+  "indent_guides": {
+    "enabled": true,
+    "line_width": 1,
+    "active_line_width": 1,
+    "coloring": "indent_aware",
+    "background_coloring": "disabled"
+  },
+
+  // ═══════════ Git ═══════════
+  "git": {
+    "git_gutter": "tracked_files",
+    "inline_blame": {
+      "enabled": false,
+      "delay_ms": 500,
+      "show_commit_summary": false
+    }
+  },
+
+  // ═══════════ Inlay Hints ═══════════
+  "inlay_hints": {
+    "enabled": false,
+    "show_type_hints": true,
+    "show_parameter_hints": true,
+    "show_other_hints": true,
+    "show_background": false
+  },
+
+  // ═══════════ Scrollbar ═══════════
+  "scrollbar": { "show": "auto" },
+
+  // ═══════════ Telemetry ═══════════
+  "telemetry": {
+    "diagnostics": false,
+    "metrics": false
+  },
+
+  // ═══════════ Terminal ═══════════
+  "terminal": {
+    "dock": "bottom",
+    "button": true,
+    "default_height": 320,
+    "blinking": "off",
+    "cursor_shape": "block",
+    "font_family": "JetBrainsMono Nerd Font",
+    "font_size": 13,
+    "line_height": "comfortable",
+    "max_scroll_history_lines": 10000,
+    "working_directory": "current_project_directory",
+    "shell": "system"
+  },
+
+  // ═══════════ Panels ═══════════
+  "project_panel": {
+    "dock": "left",
+    "default_width": 240,
+    "file_icons": true,
+    "folder_icons": true,
+    "git_status": true,
+    "indent_size": 20,
+    "auto_reveal_entries": true,
+    "auto_fold_dirs": true
+  },
+
+  // ═══════════ Extensions ═══════════
+  "auto_install_extensions": {
+    // Themes
+    "catppuccin": true,
+    "tokyo-night": true,
+    "kanagawa-themes": true,
+    "gruvbox-material": true,
+    "rose-pine-theme": true,
+    "everforest": true,
+    "dracula": true,
+    "nord": true,
+    // Languages
+    "dockerfile": true,
+    "docker-compose": true,
+    "python-snippets": true,
+    "make": true,
+    "lua": true,
+    "toml": true,
+    "xml": true,
+    "html": true,
+    "sql": true,
+    "csv": true,
+    "fastapi-snippets": true,
+    "codebook": true
+  },
+
+  // ═══════════ LSP ═══════════
+  "lsp": {
+    "basedpyright": {
+      "settings": {
+        "basedpyright.analysis": {
+          "typeCheckingMode": "standard",
+          "autoImportCompletions": true,
+          "diagnosticMode": "openFilesOnly",
+          "disableOrganizeImports": true,
+          "inlayHints": {
+            "variableTypes": true,
+            "callArgumentNames": "all",
+            "functionReturnTypes": true,
+            "genericTypes": true
+          }
+        }
+      }
+    },
+    "ruff": {
+      "initialization_options": {
+        "settings": {
+          "configurationPreference": "filesystemFirst",
+          "codeAction": {
+            "disableRuleComment": { "enable": true },
+            "fixViolation": { "enable": true }
+          }
+        }
+      }
+    },
+    "gopls": {
+      "settings": {
+        "hints": {
+          "assignVariableTypes": true,
+          "compositeLiteralFields": true,
+          "constantValues": true,
+          "functionTypeParameters": true,
+          "parameterNames": true,
+          "rangeVariableTypes": true
+        },
+        "analyses": {
+          "unusedparams": true,
+          "shadow": true
+        },
+        "staticcheck": true,
+        "gofumpt": true
+      }
+    },
+    "lua-language-server": {
+      "settings": {
+        "Lua": {
+          "diagnostics": { "globals": ["vim"] },
+          "workspace": { "checkThirdParty": false }
+        }
+      }
+    },
+    "codebook": {
+      "initialization_options": {
+        "diagnosticSeverity": "Hint"
+      }
+    }
+  },
+
+  // ═══════════ Languages ═══════════
+  "languages": {
+    "Python": {
+      "tab_size": 4,
+      "preferred_line_length": 120,
+      "language_servers": ["basedpyright", "ruff", "!pyright", "!ty", "!pylsp"],
+      "formatter": [
+        { "code_action": "source.organizeImports.ruff" },
+        { "code_action": "source.fixAll.ruff" },
+        { "language_server": { "name": "ruff" } }
+      ],
+      "format_on_save": "on"
+    },
+    "Go": {
+      "tab_size": 4,
+      "hard_tabs": true,
+      "language_servers": ["gopls"],
+      "formatter": "language_server",
+      "code_actions_on_format": { "source.organizeImports": true },
+      "format_on_save": "on"
+    },
+    "TypeScript": {
+      "tab_size": 2,
+      "formatter": {
+        "external": {
+          "command": "prettierd",
+          "arguments": ["--stdin-filepath", "{buffer_path}"]
+        }
+      },
+      "format_on_save": "on"
+    },
+    "TSX": {
+      "tab_size": 2,
+      "formatter": {
+        "external": {
+          "command": "prettierd",
+          "arguments": ["--stdin-filepath", "{buffer_path}"]
+        }
+      },
+      "format_on_save": "on"
+    },
+    "JavaScript": {
+      "tab_size": 2,
+      "formatter": {
+        "external": {
+          "command": "prettierd",
+          "arguments": ["--stdin-filepath", "{buffer_path}"]
+        }
+      },
+      "format_on_save": "on"
+    },
+    "Lua": {
+      "tab_size": 2,
+      "formatter": { "external": { "command": "stylua", "arguments": ["-"] } },
+      "format_on_save": "on"
+    },
+    "JSON": {
+      "tab_size": 2,
+      "formatter": {
+        "external": {
+          "command": "prettierd",
+          "arguments": ["--stdin-filepath", "{buffer_path}"]
+        }
+      },
+      "format_on_save": "on"
+    },
+    "JSONC": {
+      "tab_size": 2,
+      "formatter": {
+        "external": {
+          "command": "prettierd",
+          "arguments": ["--stdin-filepath", "{buffer_path}"]
+        }
+      },
+      "format_on_save": "on"
+    },
+    "YAML": {
+      "tab_size": 2,
+      "formatter": {
+        "external": {
+          "command": "prettierd",
+          "arguments": ["--stdin-filepath", "{buffer_path}"]
+        }
+      },
+      "format_on_save": "on"
+    },
+    "HTML": {
+      "tab_size": 2,
+      "formatter": {
+        "external": {
+          "command": "prettierd",
+          "arguments": ["--stdin-filepath", "{buffer_path}"]
+        }
+      },
+      "format_on_save": "on"
+    },
+    "CSS": {
+      "tab_size": 2,
+      "formatter": {
+        "external": {
+          "command": "prettierd",
+          "arguments": ["--stdin-filepath", "{buffer_path}"]
+        }
+      },
+      "format_on_save": "on"
+    },
+    "Shell Script": {
+      "tab_size": 4,
+      "formatter": {
+        "external": {
+          "command": "shfmt",
+          "arguments": ["--filename", "{buffer_path}", "-i", "4", "-ci"]
+        }
+      },
+      "format_on_save": "on"
+    },
+    "SQL": {
+      "tab_size": 2,
+      "formatter": {
+        "external": { "command": "pg_format", "arguments": ["-"] }
+      },
+      "format_on_save": "on"
+    },
+    "TOML": {
+      "tab_size": 2,
+      "formatter": "language_server",
+      "format_on_save": "on"
+    },
+    "Dockerfile": {
+      "tab_size": 4,
+      "format_on_save": "off"
+    },
+    "Markdown": {
+      "tab_size": 2,
+      "soft_wrap": "prefer_line",
+      "preferred_line_length": 80,
+      "format_on_save": "off"
+    }
+  }
+}

@@ -11,7 +11,7 @@ pack.add("https://github.com/mason-org/mason.nvim", function()
   -- Map of all tools to auto-install (mason package names).
   local tools = {
     -- LSP servers
-    "pyright",
+    "basedpyright",
     "ruff",
     "lua-language-server",
     "tsgo",

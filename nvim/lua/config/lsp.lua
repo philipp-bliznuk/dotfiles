@@ -58,17 +58,23 @@ vim.filetype.add({
 -----------------------------------------------------------
 
 -- Python: type checking, IDE intelligence
-vim.lsp.config["pyright"] = {
-  cmd = { "pyright-langserver", "--stdio" },
+vim.lsp.config["basedpyright"] = {
+  cmd = { "basedpyright-langserver", "--stdio" },
   filetypes = { "python" },
   root_markers = { "pyproject.toml", "pyrightconfig.json", "setup.py", "setup.cfg", ".git" },
   settings = {
-    python = {
+    basedpyright = {
       analysis = {
         typeCheckingMode = "standard",
         autoImportCompletions = true,
         diagnosticMode = "openFilesOnly",
         disableOrganizeImports = true, -- ruff handles imports
+        inlayHints = {
+          variableTypes = true,
+          callArgumentNames = "all",
+          functionReturnTypes = true,
+          genericTypes = true,
+        },
       },
     },
   },
@@ -319,7 +325,7 @@ vim.lsp.config["typos_lsp"] = {
 -- Enable all configured servers
 -----------------------------------------------------------
 vim.lsp.enable({
-  "pyright",
+  "basedpyright",
   "ruff",
   "lua_ls",
   "tsgo",
@@ -348,7 +354,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
       return
     end
 
-    -- Separation of concerns: ruff = lint/format only, pyright = everything else
+    -- Separation of concerns: ruff = lint/format only, basedpyright = everything else
     if client.name == "ruff" then
       client.server_capabilities.hoverProvider = false
       return

@@ -62,6 +62,7 @@ brew "lazygit"
 brew "btop"
 brew "bun"
 
+cask "zed"
 cask "brave-browser"
 cask "raycast"
 cask "devtoys"

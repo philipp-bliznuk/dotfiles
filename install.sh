@@ -66,6 +66,7 @@ packages=(
 	themes
 	tmux
 	yazi
+	zed
 	zsh
 )
 

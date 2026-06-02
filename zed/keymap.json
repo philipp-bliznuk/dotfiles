@@ -1,0 +1,166 @@
+[
+  // ═══════════════════════════════════════════════
+  // WINDOW NAVIGATION (all contexts)
+  // ═══════════════════════════════════════════════
+  {
+    "context": "Dock || Terminal || Editor",
+    "bindings": {
+      "ctrl-h": "workspace::ActivatePaneLeft",
+      "ctrl-l": "workspace::ActivatePaneRight",
+      "ctrl-k": "workspace::ActivatePaneUp",
+      "ctrl-j": "workspace::ActivatePaneDown"
+    }
+  },
+
+  // ═══════════════════════════════════════════════
+  // SPACE-LEADER (Normal mode, not in menus)
+  // ═══════════════════════════════════════════════
+  {
+    "context": "Editor && VimControl && !VimWaiting && !menu",
+    "bindings": {
+      // ── File / Find ──
+      "space f f": "file_finder::Toggle",
+      "space space": "file_finder::Toggle",
+      "space /": "workspace::NewSearch",
+      "space f b": "tab_switcher::Toggle",
+      "space f .": "projects::OpenRecent",
+      "space f h": "command_palette::Toggle",
+
+      // ── LSP ──
+      "space g d": "editor::GoToDefinition",
+      "space g D": "editor::GoToDeclaration",
+      "space g r": "editor::FindAllReferences",
+      "space g i": "editor::GoToImplementation",
+      "space g y": "editor::GoToTypeDefinition",
+      "space g s": "outline::Toggle",
+      "space g w": "project_symbols::Toggle",
+      "space g x": "diagnostics::Deploy",
+      "space g b": "git::Branch",
+
+      // ── Code Actions ──
+      "space c a": "editor::ToggleCodeActions",
+      "space c r": "editor::Rename",
+      "space c f": "editor::Format",
+
+      // ── Diagnostics ──
+      "] d": "editor::GoToDiagnostic",
+      "[ d": "editor::GoToPreviousDiagnostic",
+
+      // ── Git Hunks ──
+      "space h s": "editor::ToggleSelectedDiffHunks",
+      "space h r": "git::Restore",
+      "space h R": "git::RestoreFile",
+      "space h b": "git::Blame",
+      "space h B": "editor::ToggleGitBlameInline",
+      "] h": "editor::GoToHunk",
+      "[ h": "editor::GoToPreviousHunk",
+
+      // ── Buffers ──
+      "] b": "pane::ActivateNextItem",
+      "[ b": "pane::ActivatePreviousItem",
+      "space b d": "pane::CloseActiveItem",
+      "space b l": "pane::AlternateFile",
+      "space b o": "pane::CloseOtherItems",
+
+      // ── Panels / UI ──
+      "space e": "workspace::ToggleLeftDock",
+      "space t": "workspace::ToggleBottomDock",
+
+      // ── Save ──
+      "space w": "workspace::Save",
+
+      // ── Search & Replace ──
+      "space s r": "workspace::NewSearch",
+
+      // ── Toggles ──
+      "space u i": "editor::ToggleInlayHints",
+      "space u w": "editor::ToggleSoftWrap",
+
+      // ── Splits ──
+      "space -": "pane::SplitDown",
+      "space |": "pane::SplitRight",
+
+      // ── Quick Buffer Access ──
+      "space 1": ["pane::ActivateItem", 0],
+      "space 2": ["pane::ActivateItem", 1],
+      "space 3": ["pane::ActivateItem", 2],
+      "space 4": ["pane::ActivateItem", 3],
+      "space 5": ["pane::ActivateItem", 4]
+    }
+  },
+
+  // ═══════════════════════════════════════════════
+  // VIM CONTROL (centered scrolling + search)
+  // ═══════════════════════════════════════════════
+  {
+    "context": "Editor && VimControl && !menu",
+    "bindings": {
+      "ctrl-d": ["workspace::SendKeystrokes", "ctrl-d z z"],
+      "ctrl-u": ["workspace::SendKeystrokes", "ctrl-u z z"],
+      "n": ["workspace::SendKeystrokes", "n z z"],
+      "shift-n": ["workspace::SendKeystrokes", "shift-n z z"]
+    }
+  },
+
+  // ═══════════════════════════════════════════════
+  // VISUAL MODE (move lines + surround)
+  // ═══════════════════════════════════════════════
+  {
+    "context": "Editor && vim_mode == visual && !VimWaiting && !VimObject",
+    "bindings": {
+      "shift-j": "editor::MoveLineDown",
+      "shift-k": "editor::MoveLineUp",
+      "shift-s": "vim::PushAddSurrounds"
+    }
+  },
+
+  // ═══════════════════════════════════════════════
+  // SNEAK (two-char jump)
+  // ═══════════════════════════════════════════════
+  {
+    "context": "Editor && vim_mode == normal",
+    "bindings": {
+      "s": "vim::PushSneak",
+      "shift-s": "vim::PushSneakBackward"
+    }
+  },
+
+  // ═══════════════════════════════════════════════
+  // PROJECT PANEL (vim-like navigation)
+  // ═══════════════════════════════════════════════
+  {
+    "context": "ProjectPanel && not_editing",
+    "bindings": {
+      "a": "project_panel::NewFile",
+      "shift-a": "project_panel::NewDirectory",
+      "r": "project_panel::Rename",
+      "d": "project_panel::Delete",
+      "x": "project_panel::Cut",
+      "c": "project_panel::Copy",
+      "p": "project_panel::Paste",
+      "q": "workspace::ToggleLeftDock",
+      "enter": "project_panel::OpenPermanent",
+      "h": "project_panel::CollapseSelectedEntry",
+      "l": "project_panel::ExpandSelectedEntry",
+      "j": "menu::SelectNext",
+      "k": "menu::SelectPrevious",
+      "g g": "menu::SelectFirst",
+      "shift-g": "menu::SelectLast",
+      "-": "project_panel::SelectParent"
+    }
+  },
+
+  // ═══════════════════════════════════════════════
+  // EMPTY PANE (no file open)
+  // ═══════════════════════════════════════════════
+  {
+    "context": "EmptyPane || SharedScreen",
+    "bindings": {
+      "space f f": "file_finder::Toggle",
+      "space space": "file_finder::Toggle",
+      "space /": "workspace::NewSearch",
+      "space f .": "projects::OpenRecent",
+      "space e": "workspace::ToggleLeftDock"
+    }
+  }
+]

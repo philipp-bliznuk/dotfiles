@@ -10,6 +10,12 @@ require("blink.cmp").setup({
   signature = { enabled = true },
   sources = {
     default = { "lsp", "path", "snippets", "buffer" },
+    providers = {
+      lsp = { score_offset = 4, fallbacks = {} },
+      buffer = { score_offset = 2 },
+      path = { score_offset = 0 },
+      snippets = { score_offset = -3 },
+    },
   },
   cmdline = { enabled = true },
   fuzzy = { implementation = "prefer_rust" },
