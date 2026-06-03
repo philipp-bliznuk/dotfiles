@@ -17,8 +17,8 @@ the same language.
 **Core principles:**
 
 - **One theme, everywhere** — a single `$THEME` variable in `.zshenv` propagates
-  to terminal, shell prompt, tmux, nvim, sketchybar, yazi, and bat. One command
-  switches all 7+ apps simultaneously.
+  to terminal, shell prompt, tmux, nvim, zed, sketchybar, yazi, and bat. One
+  command switches all 8+ apps simultaneously.
 - **XDG compliance** — only `.zshenv` lives in `$HOME`. Everything else is under
   `~/.config/`.
 - **Symlink simplicity** — one idempotent `install.sh`. No stow, no Nix, no
@@ -41,7 +41,8 @@ of which theme is active.
 rose-pine, everforest, dracula, nord
 
 **Switching:** `theme-switch <name>` updates `.zshenv`, rewrites terminal configs,
-symlinks kitty/alacritty themes, rebuilds bat cache, and restarts sketchybar + tmux.
+symlinks kitty/alacritty themes, rebuilds bat cache, updates Zed's theme, and
+restarts sketchybar + tmux.
 
 ## What's Inside
 
@@ -62,6 +63,7 @@ symlinks kitty/alacritty themes, rebuilds bat cache, and restarts sketchybar + t
 | `themes/`     | 8 theme palettes + `theme-switch` script          |
 | `tmux/`       | Terminal multiplexer                              |
 | `yazi/`       | File manager                                      |
+| `zed/`        | Zed editor (secondary GUI editor)                 |
 | `zsh/`        | Shell configuration                               |
 
 ## Shell
@@ -97,6 +99,16 @@ See [nvim/README.md](nvim/README.md) for the full breakdown.
 Prefix `C-s`, vi copy-mode, transparent status bar pulling colors from theme
 environment variables. `prefix+g` opens lazygit in a 90% popup. Sessions persist
 across restarts via resurrect + continuum.
+
+## Zed
+
+Secondary GUI editor for lighter sessions. Vim mode with space-leader bindings
+mirroring the nvim keymap. Same LSP stack (basedpyright + ruff), same formatters
+(prettierd, stylua, shfmt, goimports), same theme — `theme-switch` updates
+`settings.json` via sed.
+
+**Key features:** format on save per-language, fzf-style file finder, gitsigns
+gutter, inline blame, vim surround/sneak built-in, project panel with vim keys.
 
 ## Installation
 

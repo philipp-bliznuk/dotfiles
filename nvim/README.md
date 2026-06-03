@@ -21,7 +21,7 @@ Core principles:
 
 ## Features
 
-- **15 LSP servers** — Python (pyright + ruff), TypeScript (tsgo), Go (gopls), Lua, JSON, YAML, HTML, CSS, TOML, SQL, Docker, Bash, plus grammar/spell checking (harper-ls, typos-lsp)
+- **15 LSP servers** — Python (basedpyright + ruff), TypeScript (tsgo), Go (gopls), Lua, JSON, YAML, HTML, CSS, TOML, SQL, Docker, Bash, plus grammar/spell checking (harper-ls, typos-lsp)
 - **Format on save** — ruff (Python), prettierd (JS/TS/HTML/CSS/JSON/YAML/Markdown), stylua (Lua), goimports + gofmt (Go), shfmt (Shell), pgformatter (SQL)
 - **Completion** — blink.cmp v1 with LSP, buffer, path, snippets, and cmdline sources. Rust fuzzy matcher, ghost text, signature help
 - **Fuzzy picker** — fzf-lua for files, grep, symbols, commands, keymaps, git, code actions, spell suggestions. Inherits system `FZF_DEFAULT_OPTS`
@@ -90,23 +90,23 @@ Core principles:
 
 ## LSP Servers
 
-| Server       | Languages      | Notes                                                         |
-| ------------ | -------------- | ------------------------------------------------------------- |
-| pyright      | Python         | Type checking, auto-import, venv detection via `vim.fs.root`  |
-| ruff         | Python         | Linting + formatting (hover disabled, defers to pyright)      |
-| lua_ls       | Lua            | Neovim runtime libs, LuaJIT, diagnostics.globals = vim        |
-| tsgo         | JS/TS/JSX/TSX  | Microsoft's Go-based TS server, lockfile-first root detection |
-| gopls        | Go             | Analyses, staticcheck, gofumpt, inlay hints                   |
-| jsonls       | JSON/JSONC     | Schema validation                                             |
-| yamlls       | YAML           | Kubernetes/docker-compose schema support                      |
-| html         | HTML           | Completions, hover, formatting                                |
-| cssls        | CSS/SCSS/Less  | Completions, color preview                                    |
-| taplo        | TOML           | Validation, formatting, pyproject.toml schema                 |
-| postgres_lsp | SQL            | PostgreSQL-native parser (libpg_query)                        |
-| dockerls     | Dockerfile     | Containerfile support via filetype mapping                    |
-| bashls       | Bash/Shell     | ShellCheck integration                                        |
-| harper_ls    | All code files | Grammar + spell checking in comments/strings                  |
-| typos_lsp    | All files      | Common misspelling detection in identifiers                   |
+| Server       | Languages      | Notes                                                                     |
+| ------------ | -------------- | ------------------------------------------------------------------------- |
+| basedpyright | Python         | Type checking, auto-import, inlay hints, venv detection via `vim.fs.root` |
+| ruff         | Python         | Linting + formatting (hover disabled, defers to basedpyright)             |
+| lua_ls       | Lua            | Neovim runtime libs, LuaJIT, diagnostics.globals = vim                    |
+| tsgo         | JS/TS/JSX/TSX  | Microsoft's Go-based TS server, lockfile-first root detection             |
+| gopls        | Go             | Analyses, staticcheck, gofumpt, inlay hints                               |
+| jsonls       | JSON/JSONC     | Schema validation                                                         |
+| yamlls       | YAML           | Kubernetes/docker-compose schema support                                  |
+| html         | HTML           | Completions, hover, formatting                                            |
+| cssls        | CSS/SCSS/Less  | Completions, color preview                                                |
+| taplo        | TOML           | Validation, formatting, pyproject.toml schema                             |
+| postgres_lsp | SQL            | PostgreSQL-native parser (libpg_query)                                    |
+| dockerls     | Dockerfile     | Containerfile support via filetype mapping                                |
+| bashls       | Bash/Shell     | ShellCheck integration                                                    |
+| harper_ls    | All code files | Grammar + spell checking in comments/strings                              |
+| typos_lsp    | All files      | Common misspelling detection in identifiers                               |
 
 ## Keymaps
 
@@ -264,4 +264,4 @@ First launch installs all plugins (vim.pack) and tools (Mason) automatically. No
 | Bare startup (no file)               | **95ms**                                        |
 | Python file (LSP + treesitter ready) | **~140ms** input-ready, ~380ms full diagnostics |
 
-Measured with `nvim --startuptime`. The ~240ms async tail is LSP server analysis (pyright type graph, ruff linting) — doesn't block input.
+Measured with `nvim --startuptime`. The ~240ms async tail is LSP server analysis (basedpyright type graph, ruff linting) — doesn't block input.
