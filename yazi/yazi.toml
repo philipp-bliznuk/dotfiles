@@ -4,17 +4,15 @@
 #:schema https://yazi-rs.github.io/schemas/yazi.json
 
 [mgr]
-ratio          = [ 1, 2, 5 ]
-sort_by        = "natural"
-sort_translit  = true
-sort_fallback  = "alphabetical"
-linemode       = "size"
-show_hidden    = true
+ratio = [1, 3, 4]
+sort_by = "natural"
+sort_translit = true
+sort_fallback = "alphabetical"
+linemode = "size"
+show_hidden = true
 
 [opener]
-extract = [
-	{ run = 'ouch d -y "$@"', desc = "Extract here with ouch" },
-]
+extract = [{ run = 'ouch d -y "$@"', desc = "Extract here with ouch" }]
 
 [plugin]
 prepend_previewers = [

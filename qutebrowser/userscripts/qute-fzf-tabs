@@ -1,0 +1,65 @@
+#!/usr/bin/env bash
+# Switch tabs using fzf via ghostty popup
+# Requires: ghostty, fzf, python3 (for YAML parsing)
+
+set -e
+
+TMPFILE=$(mktemp /tmp/qute-fzf-tabs.XXXXXX)
+SESSION_FILE=$(mktemp /tmp/qute-session.XXXXXX)
+trap 'rm -f "$TMPFILE" "$SESSION_FILE"' EXIT
+
+# Save current session to get tab list
+echo "session-save --force _fzf_tabs" >> "$QUTE_FIFO"
+
+# Wait briefly for session file to be written
+sleep 0.3
+
+SESSION_DIR="$QUTE_DATA_DIR/sessions"
+SESSION_PATH="$SESSION_DIR/_fzf_tabs.yml"
+
+if [[ ! -f "$SESSION_PATH" ]]; then
+    echo "message-error 'Failed to save session for tab listing'" >> "$QUTE_FIFO"
+    exit 1
+fi
+
+# Extract tab titles and URLs from session YAML (simple grep-based parsing)
+# Format: "index: title | url"
+python3 -c "
+import yaml, sys
+with open('$SESSION_PATH') as f:
+    data = yaml.safe_load(f)
+windows = data.get('windows', [])
+idx = 1
+for win in windows:
+    for tab in win.get('tabs', []):
+        history = tab.get('history', [])
+        if history:
+            entry = history[-1]
+            title = entry.get('title', 'Untitled')
+            url = entry.get('url', '')
+            print(f'{idx}: {title} | {url}')
+            idx += 1
+" > "$SESSION_FILE" 2>/dev/null || {
+    # Fallback: simple grep if pyyaml not available
+    grep -E '^\s+url:' "$SESSION_PATH" | sed 's/.*url: //' | \
+        nl -ba -w2 -s': ' > "$SESSION_FILE"
+}
+
+# Launch ghostty with fzf
+ghostty -e bash -c "
+    cat '$SESSION_FILE' | \
+    fzf --prompt='tabs> ' \
+        --preview-window=hidden \
+        --height=100% \
+        --layout=reverse | \
+    cut -d':' -f1 | tr -d ' ' > '$TMPFILE'
+" 2>/dev/null || true
+
+selected=$(cat "$TMPFILE" 2>/dev/null | tr -d '[:space:]')
+
+if [[ -n "$selected" ]]; then
+    echo "tab-focus $selected" >> "$QUTE_FIFO"
+fi
+
+# Cleanup session file
+rm -f "$SESSION_PATH" 2>/dev/null || true

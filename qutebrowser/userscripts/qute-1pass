@@ -1,0 +1,97 @@
+#!/usr/bin/env bash
+# 1Password autofill for qutebrowser (op CLI v2 + macOS Touch ID)
+# Adapted from tomoakley/dotfiles
+
+set -e
+
+javascript_escape() {
+    sed "s,[\\\\'\"\\/],\\\\&,g" <<< "$1"
+}
+
+js() {
+cat <<EOF
+    function isVisible(elem) {
+        var style = elem.ownerDocument.defaultView.getComputedStyle(elem, null);
+        if (style.getPropertyValue("visibility") !== "visible" ||
+            style.getPropertyValue("display") === "none" ||
+            style.getPropertyValue("opacity") === "0") {
+            return false;
+        }
+        return elem.offsetWidth > 0 && elem.offsetHeight > 0;
+    };
+    function hasPasswordField(form) {
+        var inputs = form.getElementsByTagName("input");
+        for (var j = 0; j < inputs.length; j++) {
+            if (inputs[j].type == "password") return true;
+        }
+        return false;
+    };
+    function loadData2Form(form) {
+        var inputs = form.getElementsByTagName("input");
+        for (var j = 0; j < inputs.length; j++) {
+            var input = inputs[j];
+            if (isVisible(input) && (input.type == "text" || input.type == "email")) {
+                input.focus();
+                input.value = "$(javascript_escape "${USERNAME}")";
+                input.dispatchEvent(new Event('change', {bubbles: true}));
+                input.blur();
+            }
+            if (input.type == "password") {
+                input.focus();
+                input.value = "$(javascript_escape "${PASSWORD}")";
+                input.dispatchEvent(new Event('change', {bubbles: true}));
+                input.blur();
+            }
+        }
+    };
+    var forms = document.getElementsByTagName("form");
+    for (var i = 0; i < forms.length; i++) {
+        if (hasPasswordField(forms[i])) {
+            loadData2Form(forms[i]);
+        }
+    }
+EOF
+}
+
+URL=$(echo "$QUTE_URL" | awk -F/ '{print $3}' | sed 's/www.//g')
+echo "message-info 'Looking for credentials for $URL...'" >> "$QUTE_FIFO"
+
+# Find item matching current URL
+TITLE_URL=$(op item list --format=json 2>/dev/null | \
+    jq -r '.[] | "\(.title):\(.urls // [] | map(.href // empty) | select(length > 0) | join(":"))"' | \
+    grep -i "$URL" | head -1) || true
+
+if [[ -z "$TITLE_URL" ]]; then
+    echo "message-error 'No 1Password entry found for $URL'" >> "$QUTE_FIFO"
+    exit 0
+fi
+
+IFS=: read -r TITLE _remainder <<< "$TITLE_URL"
+
+# Get credentials
+FIELDS=$(op item get "$TITLE" --fields=username,password --reveal 2>/dev/null) || true
+
+if [[ -z "$FIELDS" ]]; then
+    echo "message-error 'Failed to retrieve credentials for $TITLE'" >> "$QUTE_FIFO"
+    exit 0
+fi
+
+USERNAME=$(echo "$FIELDS" | head -1 | cut -d',' -f1)
+PASSWORD=$(echo "$FIELDS" | head -1 | cut -d',' -f2)
+
+if [[ -n "$PASSWORD" ]]; then
+    printjs() {
+        js | sed 's,//.*$,,' | tr '\n' ' '
+    }
+    echo "jseval -q $(printjs)" >> "$QUTE_FIFO"
+    echo "message-info 'Credentials filled for $TITLE'" >> "$QUTE_FIFO"
+
+    # Copy TOTP to clipboard if available
+    TOTP=$(op item get "$TITLE" --otp 2>/dev/null) || true
+    if [[ -n "$TOTP" ]]; then
+        echo "$TOTP" | pbcopy
+        echo "message-info 'OTP for $TITLE copied to clipboard'" >> "$QUTE_FIFO"
+    fi
+else
+    echo "message-error 'No password found for $TITLE'" >> "$QUTE_FIFO"
+fi

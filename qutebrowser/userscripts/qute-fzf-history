@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+# Open browsing history in fzf via ghostty popup, navigate to selected URL
+# Requires: ghostty, fzf, sqlite3
+
+set -e
+
+HISTDB="$QUTE_DATA_DIR/history.sqlite"
+TMPFILE=$(mktemp /tmp/qute-fzf-history.XXXXXX)
+trap 'rm -f "$TMPFILE"' EXIT
+
+if [[ ! -f "$HISTDB" ]]; then
+    echo "message-error 'History database not found'" >> "$QUTE_FIFO"
+    exit 1
+fi
+
+# Launch ghostty with fzf showing history (most recent first)
+ghostty -e bash -c "
+    sqlite3 -separator ' | ' '$HISTDB' \
+        'SELECT url, title FROM CompletionHistory ORDER BY last_atime DESC LIMIT 5000' | \
+    fzf --prompt='history> ' \
+        --with-nth=2.. \
+        --delimiter=' \\| ' \
+        --preview-window=hidden \
+        --height=100% \
+        --layout=reverse | \
+    cut -d' ' -f1 > '$TMPFILE'
+" 2>/dev/null || true
+
+selected=$(cat "$TMPFILE" 2>/dev/null)
+
+if [[ -n "$selected" ]]; then
+    echo "open -t $selected" >> "$QUTE_FIFO"
+fi

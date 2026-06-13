@@ -33,7 +33,6 @@ brew "yq"
 brew "zoxide"
 brew "rich"
 
-
 # Casks
 cask "font-jetbrains-mono-nerd-font"
 cask "font-symbols-only-nerd-font"
@@ -62,6 +61,8 @@ brew "lazygit"
 brew "btop"
 brew "bun"
 
+cask "1password-cli"
+cask "qutebrowser"
 cask "zed"
 cask "brave-browser"
 cask "raycast"

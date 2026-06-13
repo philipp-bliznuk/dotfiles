@@ -1,0 +1,52 @@
+#!/usr/bin/env bash
+# Open bookmarks/quickmarks in fzf via ghostty popup
+# Requires: ghostty, fzf
+
+set -e
+
+TMPFILE=$(mktemp /tmp/qute-fzf-bookmarks.XXXXXX)
+trap 'rm -f "$TMPFILE"' EXIT
+
+BOOKMARKS="$QUTE_DATA_DIR/bookmarks/urls"
+QUICKMARKS="$QUTE_CONFIG_DIR/quickmarks"
+
+# Combine bookmarks and quickmarks into one list
+{
+    # Quickmarks: "name url" format
+    if [[ -f "$QUICKMARKS" ]]; then
+        while IFS=' ' read -r name url; do
+            [[ -n "$name" && -n "$url" ]] && echo "[qm] $name | $url"
+        done < "$QUICKMARKS"
+    fi
+
+    # Bookmarks: "url title" format
+    if [[ -f "$BOOKMARKS" ]]; then
+        while IFS=' ' read -r url title; do
+            [[ -n "$url" ]] && echo "[bm] ${title:-$url} | $url"
+        done < "$BOOKMARKS"
+    fi
+} | sort > /tmp/qute-fzf-bm-input.txt
+
+if [[ ! -s /tmp/qute-fzf-bm-input.txt ]]; then
+    echo "message-warning 'No bookmarks or quickmarks found'" >> "$QUTE_FIFO"
+    rm -f /tmp/qute-fzf-bm-input.txt
+    exit 0
+fi
+
+# Launch ghostty with fzf
+ghostty -e bash -c "
+    cat /tmp/qute-fzf-bm-input.txt | \
+    fzf --prompt='bookmarks> ' \
+        --preview-window=hidden \
+        --height=100% \
+        --layout=reverse | \
+    awk -F' \\| ' '{print \$NF}' > '$TMPFILE'
+" 2>/dev/null || true
+
+rm -f /tmp/qute-fzf-bm-input.txt
+
+selected=$(cat "$TMPFILE" 2>/dev/null | tr -d '[:space:]')
+
+if [[ -n "$selected" ]]; then
+    echo "open -t $selected" >> "$QUTE_FIFO"
+fi
