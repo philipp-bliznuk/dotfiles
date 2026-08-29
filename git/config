@@ -7,14 +7,20 @@
 	precomposeUnicode = true
 	ignoreCase = true
 
-[user]
-	name = Philipp Bliznuk
-	email = philipp.bliznuk@gmail.com
-	username = philipp-bliznuk
-	signingkey = 2F728CC11D7C6163
+[includeIf "hasconfig:remote.*.url:git@pb:**/**"]
+    path = ~/.config/git/pb
+
+[includeIf "hasconfig:remote.*.url:git@ic:**/**"]
+    path = ~/.config/git/ic
+
+[includeIf "hasconfig:remote.*.url:git@gx:**/**"]
+    path = ~/.config/git/gx
 
 [commit]
 	gpgsign = true
+
+[gpg]
+    format = openpgp
 
 [pull]
 	rebase = true

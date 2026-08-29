@@ -1,5 +1,7 @@
 # GPG tty (zsh builtin, no fork)
 export GPG_TTY=$TTY
+export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
+gpgconf --launch gpg-agent
 
 # History
 HISTFILE="$XDG_DATA_HOME/zsh/zsh_history"
