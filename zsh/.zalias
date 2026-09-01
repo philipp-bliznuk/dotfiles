@@ -17,3 +17,6 @@ alias pinentry='pinentry-mac'
 alias n="nvim"
 alias dotf='cd "$HOME/projects/dotfiles/" && ${VISUAL:-${EDITOR:-nvim}}'
 alias brewup="brew update && brew upgrade && brew cleanup"
+
+# Yubikey resync
+alias yksync='gpg-connect-agent "scd serialno" "learn --force" /bye'
