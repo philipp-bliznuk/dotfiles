@@ -1,22 +1,22 @@
 [[plugin.deps]]
 use = "ndtoan96/ouch"
-rev = "406ce6c"
-hash = "f5afc904d5106ee368c8aa2ded43bd74"
+rev = "cfe4f50"
+hash = "eff5702573b6cfba61e4ac8b1969629a"
 
 [[flavor.deps]]
 use = "yazi-rs/flavors:catppuccin-mocha"
-rev = "54ab389"
-hash = "7dfe41c9c3d9be76da8a844263d0bbed"
+rev = "20b47bf"
+hash = "ce320f877fe709b189433941aba747c4"
 
 [[flavor.deps]]
 use = "yazi-rs/flavors:dracula"
-rev = "54ab389"
-hash = "20624fcdfcf7e4e912de05e348065e5e"
+rev = "20b47bf"
+hash = "40136c9a02e166067a36d9ad618887f2"
 
 [[flavor.deps]]
 use = "AdithyanA2005/nord"
-rev = "1b1bf78"
-hash = "4dbe11b947f327a0075d16f4a6b55043"
+rev = "34970be"
+hash = "6e1d257f00b540acbeb194082ce073c2"
 
 [[flavor.deps]]
 use = "Mintass/rose-pine"
@@ -35,8 +35,8 @@ hash = "d4c7003ec6dc4efd5d3a050d5c2f2575"
 
 [[flavor.deps]]
 use = "Chromium-3-Oxide/everforest-medium"
-rev = "4eede31"
-hash = "2f79b3c6afefef9b1c269edd38b45fab"
+rev = "e1ead7b"
+hash = "f7dc46200e53da5e94858630184a9220"
 
 [[flavor.deps]]
 use = "dangooddd/kanagawa"

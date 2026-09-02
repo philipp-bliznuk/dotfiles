@@ -12,7 +12,7 @@ linemode = "size"
 show_hidden = true
 
 [opener]
-extract = [{ run = 'ouch d -y "$@"', desc = "Extract here with ouch" }]
+extract = [{ run = 'ouch d -y %s', desc = "Extract here with ouch" }]
 
 [plugin]
 prepend_previewers = [

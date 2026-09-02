@@ -7,7 +7,7 @@
 prepend_keymap = [
     { on = "!", run = 'shell "$SHELL" --block', desc = "Open $SHELL here" },
     { on = ["C"], run = "plugin ouch", desc = "Compress with ouch" },
-    { on = ["X"], run = "extract --hovered", desc = "Extract here" },
+    { on = ["X"], run = 'shell -- ouch d -y %h', desc = "Extract hovered with ouch" },
 ]
 
 [input]
