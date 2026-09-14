@@ -15,7 +15,7 @@ diff-formatter = ":git"
 [signing]
 behavior = "own"
 backend = "gpg"
-key = "2F728CC11D7C6163"
+key = "90FCB72BBEA3C725"
 
 [git]
 colocate = true

@@ -1,0 +1,411 @@
+#!/bin/zsh
+# debloat - disable unused Apple launchd services and keep them off across boots.
+# Usage: debloat <status|apply|prune|enable|install|uninstall>
+set -euo pipefail
+
+SCRIPT_PATH="${0:A}"
+SCRIPT_DIR="${SCRIPT_PATH:h}"
+LABELS_FILE="$SCRIPT_DIR/labels.txt"
+
+INSTALL_DIR="/Library/Application Support/debloat"
+DAEMON_LABEL="dev.bliznuk.debloat"
+DAEMON_PLIST="/Library/LaunchDaemons/$DAEMON_LABEL.plist"
+LOG_FILE="$INSTALL_DIR/debloat.log"
+SNAPSHOT="$INSTALL_DIR/snapshot.txt"
+
+LAUNCHD_DIRS=(
+	/System/Library/LaunchDaemons
+	/System/Library/LaunchAgents
+	/System/Cryptexes/App/System/Library/LaunchDaemons
+	/System/Cryptexes/App/System/Library/LaunchAgents
+	/Library/Apple/System/Library/LaunchDaemons
+	/Library/Apple/System/Library/LaunchAgents
+)
+
+typeset -a LABELS
+typeset -A COMMENT   # label -> comment
+typeset -A REG       # "domain/label" -> pid (0 when registered but idle)
+typeset -A DIS       # "domain/label" -> 1 when override present
+typeset -a DOMAINS
+
+# ---------------------------------------------------------------- helpers
+
+info() { print -u2 -- "[*] $*"; }
+ok() { print -u2 -- "[+] $*"; }
+warn() { print -u2 -- "[!] $*"; }
+die() { print -u2 -- "[x] $*"; exit 1; }
+
+need_root() {
+	[[ $EUID -eq 0 ]] || die "run with sudo: sudo $SCRIPT_PATH $1"
+}
+
+console_uid() {
+	stat -f %u /dev/console 2>/dev/null || print 0
+}
+
+# gui domain is per logged-in user. Absent before login (console owned by root).
+resolve_domains() {
+	local uid
+	DOMAINS=(system)
+	if [[ $EUID -ne 0 ]]; then
+		DOMAINS+=("gui/$UID")
+		return
+	fi
+	uid="${SUDO_UID:-$(console_uid)}"
+	[[ "$uid" != 0 ]] && DOMAINS+=("gui/$uid")
+}
+
+load_labels() {
+	local line label comment
+	[[ -r "$LABELS_FILE" ]] || die "labels file missing: $LABELS_FILE"
+	LABELS=()
+	while IFS= read -r line; do
+		line="${line%%$'\r'}"
+		[[ -z "${line// /}" || "$line" == \#* ]] && continue
+		label="${line%%[[:space:]]*}"
+		comment="${line#*\#}"
+		[[ "$comment" == "$line" ]] && comment=""
+		LABELS+=("$label")
+		COMMENT[$label]="${comment## }"
+	done <"$LABELS_FILE"
+	(( $#LABELS )) || die "no labels in $LABELS_FILE"
+}
+
+# One `launchctl print <domain>` carries pids (services block) and overrides
+# (disabled services block). Parsed once per domain, cached in REG / DIS.
+scan_domain() {
+	local domain="$1" block="" line label pid
+	launchctl print "$domain" 2>/dev/null | while IFS= read -r line; do
+		if [[ "$line" =~ $'^\t([a-z ]+) = \{$' ]]; then
+			block="${match[1]}"
+			continue
+		fi
+		if [[ "$line" == $'\t}'* ]]; then
+			block=""
+			continue
+		fi
+		case "$block" in
+		services)
+			set -- ${=line}
+			(( $# )) || continue
+			label="${@[-1]}"
+			pid="$1"
+			[[ "$pid" == <-> ]] || pid=0
+			print -- "R $label $pid"
+			;;
+		"disabled services")
+			if [[ "$line" =~ '"([^"]+)" => (true|disabled)' ]]; then
+				print -- "D ${match[1]}"
+			fi
+			;;
+		esac
+	done | while read -r kind label pid; do
+		if [[ "$kind" == R ]]; then
+			REG[$domain/$label]="$pid"
+		else
+			DIS[$domain/$label]=1
+		fi
+	done
+}
+
+scan_all() {
+	local d
+	REG=()
+	DIS=()
+	for d in $DOMAINS; do
+		scan_domain "$d"
+	done
+}
+
+# Domains a label lives in: plist location decides (LaunchAgents -> gui,
+# LaunchDaemons -> system), plus anything launchd already has registered.
+label_domains() {
+	local label="$1" dir d
+	typeset -A seen
+	for dir in $LAUNCHD_DIRS; do
+		[[ -e "$dir/$label.plist" ]] || continue
+		d=system
+		[[ "$dir" == *LaunchAgents ]] && d="${DOMAINS[(r)gui/*]:-}"
+		[[ -n "$d" ]] && seen[$d]=1
+	done
+	for d in $DOMAINS; do
+		[[ -n "${REG[$d/$label]-}" ]] && seen[$d]=1
+	done
+	print -- ${(k)seen}
+}
+
+is_disabled() {
+	local label="$1" d
+	local doms=($(label_domains "$label"))
+	(( $#doms )) || return 1
+	for d in $doms; do
+		[[ -n "${DIS[$d/$label]-}" ]] || return 1
+	done
+	return 0
+}
+
+running_pid() {
+	local label="$1" d pid
+	for d in $DOMAINS; do
+		pid="${REG[$d/$label]-0}"
+		(( pid )) && { print -- "$pid"; return; }
+	done
+	print 0
+}
+
+# ---------------------------------------------------------------- status
+
+cmd_status() {
+	local label state pid doms n_off=0 n_on=0 n_run=0 n_absent=0
+	load_labels
+	resolve_domains
+	scan_all
+	printf '%-52s %-9s %s\n' LABEL STATE DOMAINS
+	for label in $LABELS; do
+		doms=($(label_domains "$label"))
+		if (( ! $#doms )); then
+			(( ++n_absent ))
+			continue
+		fi
+		pid=$(running_pid "$label")
+		if (( pid )); then
+			state="RUN:$pid"
+			(( ++n_run ))
+		elif is_disabled "$label"; then
+			state=off
+			(( ++n_off ))
+		else
+			state=on
+			(( ++n_on ))
+		fi
+		printf '%-52s %-9s %s\n' "$label" "$state" "${(j:,:)doms}"
+	done
+	print
+	print -- "off: $n_off  on: $n_on  running: $n_run  absent on this build: $n_absent"
+	if [[ -e "$DAEMON_PLIST" ]]; then
+		print -- "daemon: installed ($DAEMON_PLIST)"
+	else
+		print -- "daemon: not installed"
+	fi
+}
+
+# ---------------------------------------------------------------- apply
+
+snapshot_overrides() {
+	local d
+	[[ -e "$SNAPSHOT" ]] && return
+	mkdir -p "$INSTALL_DIR"
+	{
+		print -- "# launchctl print-disabled before first debloat apply, $(date -u +%FT%TZ)"
+		for d in $DOMAINS; do
+			print -- "## $d"
+			launchctl print-disabled "$d" 2>/dev/null || true
+		done
+	} >"$SNAPSHOT"
+	chmod 644 "$SNAPSHOT"
+}
+
+launchctl_quiet() {
+	local out
+	if out=$(launchctl "$@" 2>&1); then
+		return 0
+	fi
+	print -- "${out##*$'\n'}"
+	return 1
+}
+
+cmd_apply() {
+	local label d pid err
+	local -a doms disabled failed skipped killed
+	need_root apply
+	load_labels
+	resolve_domains
+	scan_all
+	snapshot_overrides
+	info "domains: ${(j:, :)DOMAINS}"
+
+	for label in $LABELS; do
+		doms=($(label_domains "$label"))
+		if (( ! $#doms )); then
+			skipped+=("$label")
+			continue
+		fi
+		for d in $doms; do
+			[[ -n "${DIS[$d/$label]-}" ]] && continue
+			if err=$(launchctl_quiet disable "$d/$label"); then
+				disabled+=("$d/$label")
+			else
+				failed+=("$d/$label: $err")
+			fi
+			launchctl bootout "$d/$label" 2>/dev/null || true
+		done
+	done
+
+	scan_all
+	for label in $LABELS; do
+		pid=$(running_pid "$label")
+		(( pid )) || continue
+		kill -9 "$pid" 2>/dev/null && killed+=("$label:$pid")
+	done
+
+	ok "disabled now: $#disabled, killed: $#killed, absent on this build: $#skipped"
+	if (( $#failed )); then
+		warn "override failures:"
+		print -u2 -l -- "  ${^failed}"
+	fi
+	if [[ "${DOMAINS[(r)gui/*]:-}" == "" ]]; then
+		warn "no console user yet, gui/ labels deferred to next run"
+	fi
+}
+
+# ---------------------------------------------------------------- enable
+
+cmd_enable() {
+	local label d
+	local -a doms
+	need_root enable
+	load_labels
+	resolve_domains
+	scan_all
+	for label in $LABELS; do
+		doms=($(label_domains "$label"))
+		for d in $doms; do
+			[[ -n "${DIS[$d/$label]-}" ]] || continue
+			launchctl enable "$d/$label" 2>/dev/null || warn "enable failed: $d/$label"
+		done
+	done
+	ok "overrides removed for all catalog labels (services start on demand or at next login)"
+	[[ -e "$DAEMON_PLIST" ]] && cmd_uninstall
+	return 0
+}
+
+# ---------------------------------------------------------------- daemon
+
+write_daemon_plist() {
+	cat >"$DAEMON_PLIST" <<EOF
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Label</key>
+	<string>$DAEMON_LABEL</string>
+	<key>ProgramArguments</key>
+	<array>
+		<string>/bin/zsh</string>
+		<string>$INSTALL_DIR/debloat</string>
+		<string>apply</string>
+	</array>
+	<key>RunAtLoad</key>
+	<true/>
+	<key>StartInterval</key>
+	<integer>300</integer>
+	<key>StandardOutPath</key>
+	<string>/dev/null</string>
+	<key>StandardErrorPath</key>
+	<string>$LOG_FILE</string>
+</dict>
+</plist>
+EOF
+	chown root:wheel "$DAEMON_PLIST"
+	chmod 644 "$DAEMON_PLIST"
+}
+
+cmd_install() {
+	need_root install
+	load_labels
+	[[ "$SCRIPT_PATH" == "$INSTALL_DIR/"* ]] && die "run install from the repo copy, not $INSTALL_DIR"
+	mkdir -p "$INSTALL_DIR"
+	install -o root -g wheel -m 755 "$SCRIPT_PATH" "$INSTALL_DIR/debloat"
+	install -o root -g wheel -m 644 "$LABELS_FILE" "$INSTALL_DIR/labels.txt"
+	chown root:wheel "$INSTALL_DIR"
+	chmod 755 "$INSTALL_DIR"
+	launchctl bootout "system/$DAEMON_LABEL" 2>/dev/null || true
+	write_daemon_plist
+	launchctl bootstrap system "$DAEMON_PLIST"
+	ok "daemon installed: $DAEMON_PLIST (RunAtLoad + every 300s, log $LOG_FILE)"
+	LABELS_FILE="$INSTALL_DIR/labels.txt"
+	cmd_apply
+}
+
+cmd_uninstall() {
+	need_root uninstall
+	launchctl bootout "system/$DAEMON_LABEL" 2>/dev/null || true
+	rm -f "$DAEMON_PLIST"
+	rm -rf "$INSTALL_DIR"
+	ok "daemon removed. Current overrides stay until reboot; run enable to lift them now."
+}
+
+# ---------------------------------------------------------------- prune
+
+plist_program() {
+	plutil -extract ProgramArguments.0 raw -o - "$1" 2>/dev/null \
+		|| plutil -extract Program raw -o - "$1" 2>/dev/null \
+		|| return 1
+}
+
+prune_dir() {
+	local dir="$1" domain="$2" p prog label
+	for p in "$dir"/*.plist(N); do
+		prog=$(plist_program "$p") || continue
+		[[ "$prog" == /* && ! -e "$prog" ]] || continue
+		(( ++FOUND ))
+		print -- "$p -> $prog"
+		if [[ $EUID -ne 0 && "$dir" == /Library/* ]]; then
+			warn "needs sudo, skipped"
+			continue
+		fi
+		read -q "?remove? [y/N] " || { print; continue; }
+		print
+		label=$(plutil -extract Label raw -o - "$p" 2>/dev/null || print "")
+		[[ -n "$label" ]] && launchctl bootout "$domain/$label" 2>/dev/null || true
+		rm -f "$p" && ok "removed $p"
+	done
+}
+
+# Third-party launchd plists whose program no longer exists. Each removal confirmed.
+cmd_prune() {
+	local gui home
+	typeset -gi FOUND=0
+	resolve_domains
+	gui="${DOMAINS[2]:-}"
+	[[ -n "$gui" ]] || die "no console user, run as user or via sudo from a login session"
+	home=$(dscl . -read "/Users/$(id -un "${gui#gui/}")" NFSHomeDirectory 2>/dev/null | awk '{print $2}')
+	prune_dir "${home:-$HOME}/Library/LaunchAgents" "$gui"
+	prune_dir /Library/LaunchAgents "$gui"
+	prune_dir /Library/LaunchDaemons system
+	(( FOUND )) || info "no orphan plists"
+}
+
+# ---------------------------------------------------------------- main
+
+usage() {
+	cat <<EOF
+usage: debloat <command>
+
+  status      disabled / enabled / running for every catalog label
+  apply       disable + stop catalog labels (sudo). Holds until reboot
+  prune       remove third-party launchd plists whose program is gone, y/N each
+              (sudo for /Library)
+  install     copy to $INSTALL_DIR, add boot daemon, apply (sudo)
+  uninstall   remove daemon and installed copy (sudo)
+  enable      re-enable every catalog label and remove daemon (sudo)
+
+labels: $LABELS_FILE
+EOF
+}
+
+main() {
+	local cmd="${1:-}"
+	case "$cmd" in
+	status) cmd_status ;;
+	apply) cmd_apply ;;
+	prune) cmd_prune ;;
+	install) cmd_install ;;
+	uninstall) cmd_uninstall ;;
+	enable) cmd_enable ;;
+	-h | --help | help | "") usage ;;
+	*) die "unknown command: $cmd" ;;
+	esac
+}
+
+main "$@"

@@ -1,0 +1,136 @@
+# launchd labels disabled by ./debloat apply. One label per line, `#` comments.
+# Derived from OleksandrKrupko/mac-os-debloat v0.13.2 catalog (MIT), filtered:
+# no [sip-off] rows (respawn via XPC while SIP is on), no iCloud / Apple ID /
+# App Store / Keychain / Time Machine / Calendar / Reminders / Spotlight UI.
+
+# === Siri / voice assistant ===
+com.apple.siriappintentsd                        # Siri App Intents orchestrator
+com.apple.assistant_service                      # Siri execution / flow XPC
+com.apple.Siri.agent                             # Siri agent
+com.apple.SiriTTSTrainingAgent                   # Siri voice training
+com.apple.intelligencecontextd                   # Apple Intelligence context runtime
+
+# === Apple Intelligence ===
+com.apple.mlruntimed                             # federated ML model evaluation runtime
+com.apple.naturallanguaged                       # NaturalLanguage framework daemon
+com.apple.textunderstandingd                     # text understanding AI
+com.apple.visualintelligenced                    # Visual Intelligence (screenshot / camera AI)
+
+# === More AI / Apple Intelligence ===
+com.apple.speech.synthesisserver                 # speech synthesis server
+com.apple.spotlightknowledged                    # CoreSpotlight semantic search
+com.apple.spotlightknowledged.importer           # CoreSpotlight importer
+com.apple.callintelligenced                      # AI call analysis (call summaries)
+com.apple.intelligencetasksd                     # AI tasks daemon
+com.apple.LinkedNotesUIService                   # Notes backlink indicator UI
+
+# === Proactive / predictive ===
+com.apple.navd                                   # time-to-leave / commute predictions
+com.apple.proactived                             # proactive engine
+com.apple.proactiveeventtrackerd                 # proactive event tracker
+com.apple.knowledgeconstructiond                 # knowledge graph construction
+com.apple.reversetemplated                       # reverse template AI
+
+# === Speech / dictation / accessibility ===
+com.apple.speech.speechsynthesisd.arm64          # text-to-speech (Apple Silicon)
+com.apple.speech.speechsynthesisd.x86_64         # text-to-speech (Intel / Rosetta)
+com.apple.speech.speechdatainstallerd            # voice data installer
+com.apple.speechmaintenanced                     # on-device speech model maintenance
+com.apple.translationd                           # Apple Translate API
+com.apple.VoiceOver                              # screen reader
+com.apple.accessibility.LiveTranscriptionAgent   # live transcription / captions
+com.apple.DictationIM                            # dictation input method
+com.apple.voicememod                             # Voice Memos app
+
+# === iMessage / FaceTime / phone relay ===
+com.apple.imautomatichistorydeletionagent        # iMessage history cleanup
+com.apple.callhistoryd                           # iPhone call history sync
+com.apple.CallHistoryPluginHelper                # call history plugin
+com.apple.CallHistorySyncHelper                  # call history iCloud sync
+com.apple.businessservicesd                      # Apple Business Chat
+com.apple.facetimemessagestored                  # FaceTime message store
+com.apple.avatarsd                               # Memoji / avatars
+com.apple.stickersd                              # iMessage stickers
+
+# === Continuity / Sidecar (devices owned, features unused) ===
+com.apple.companiond                             # Apple Watch / iPhone companion (Watch unlock, hotspot auto-join)
+com.apple.sidecar-display-agent                  # Sidecar display agent
+com.apple.mediacontinuityd                       # media Continuity
+
+# === Apple Music / TV+ / Books / DRM ===
+com.apple.musicd                                 # Apple Music local daemon
+com.apple.amp.mediasharingd                      # Apple Music sharing
+com.apple.mediastream.mstreamd                   # iCloud media stream
+com.apple.AMPArtworkAgent                        # album artwork
+com.apple.AMPDevicesAgent                        # Apple Music devices agent
+com.apple.AMPLibraryAgent                        # Apple Music library
+com.apple.AMPSystemPlayerAgent                   # system music player agent
+com.apple.videosubscriptionsd                    # Apple TV+ subscriptions
+com.apple.watchlistd                             # Apple TV+ watchlist
+com.apple.bookassetd                             # Apple Books asset downloads
+com.apple.bookdatastored                         # Apple Books data store
+com.apple.fairplayd                              # FairPlay DRM
+com.apple.fairplaydeviceidentityd                # FairPlay device identity
+
+# === Contacts / AddressBook ===
+com.apple.contactsd                              # Contacts sync
+com.apple.contacts.postersyncd                   # Contacts profile picture sync
+com.apple.AddressBook.AssistantService           # Contacts assistant
+com.apple.AddressBook.SourceSync                 # Contacts source sync
+com.apple.AddressBook.abd                        # Contacts daemon
+
+# === Notes ===
+com.apple.notes.exchangenotesd                   # Apple Notes Exchange sync
+
+# === Safari ===
+com.apple.SafariLaunchAgent                      # Safari startup agent
+com.apple.webinspectord                          # Safari Web Inspector
+com.apple.webkit.webpushd                        # WebKit push (Safari web notifications)
+
+# === Maps / News / Sports / Game Center / HomeKit ===
+com.apple.Maps.mapspushd                         # Apple Maps push
+com.apple.maps.destinationd                      # Apple Maps destinations
+com.apple.newsd                                  # News app daemon
+com.apple.sportsd                                # Apple Sports data
+com.apple.gamed                                  # Game Center
+com.apple.gamesaved                              # game saves
+com.apple.GameController.gamecontrolleragentd    # game controller agent
+com.apple.GameController.gamecontrollerd         # game controller daemon
+com.apple.threadradiod                           # Thread radio (Matter / HomeKit)
+
+# === Family / parental / education ===
+com.apple.familycontrols                         # family controls daemon
+com.apple.familycontrols.useragent               # family controls user agent
+com.apple.FamilyControlsAgent                    # family controls agent
+com.apple.familynotificationd                    # family notifications
+com.apple.parentalcontrols.check                 # parental controls checker
+com.apple.askpermissiond                         # family purchase approval (Ask to Buy)
+com.apple.progressd                              # ClassKit education progress
+com.apple.studentd                               # Schoolwork app
+
+# === Print ===
+com.apple.printtool.agent                        # print tool agent
+com.apple.printtool.daemon                       # print tool daemon
+com.apple.printuitool.agent                      # print UI tool agent
+
+# === Touch Bar ===
+com.apple.nowplayingtouchui                      # Touch Bar now-playing UI
+com.apple.touchbarserver                         # Touch Bar server
+com.apple.controlstrip                           # Touch Bar control strip
+com.apple.SpacesTouchBarAgent.app                # Touch Bar Spaces agent
+com.apple.accessibility.dfrhud                   # Touch Bar accessibility HUD
+
+# === Xcode / iOS dev stack ===
+com.apple.previewsd                              # Xcode SwiftUI previews
+com.apple.dt.AutomationModeUI                    # Xcode automation UI
+com.apple.dt.automationmode-writer               # Xcode automation writer
+
+# === Misc ===
+com.apple.ndoagent                               # AppleCare / new-device outreach nags
+com.apple.powerchime                             # laptop charging chime sound
+com.apple.filesystems.fskitd                     # File System Kit core (3rd-party FS plugins)
+com.apple.fskit.fskit_agent                      # FSKit agent
+com.apple.fskit.fskit_helper                     # FSKit helper
+com.apple.softwareupdate_firstrun_tasks          # one-shot first-boot SU tasks
+com.apple.AOSPushRelay                           # legacy iCloud push relay
+com.apple.calendar.CalendarAgentBookmarkMigrationService # one-shot Calendar bookmark migration
