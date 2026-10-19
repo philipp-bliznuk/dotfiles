@@ -32,6 +32,11 @@ brew "yazi"
 brew "yq"
 brew "zoxide"
 brew "rich"
+brew "visidata"
+brew "kondo"
+brew "grex"
+brew "oxker"
+brew "croc"
 
 # Casks
 cask "font-jetbrains-mono-nerd-font"
