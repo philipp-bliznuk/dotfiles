@@ -8,8 +8,6 @@ pack.on_event("https://github.com/windwp/nvim-autopairs", {
   config = function()
     require("nvim-autopairs").setup({
       check_ts = true, -- treesitter-aware (don't pair inside strings etc.)
-      map_cr = true, -- Enter between pairs expands properly
-      map_bs = true, -- Backspace deletes both sides of pair
     })
   end,
 })

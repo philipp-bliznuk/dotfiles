@@ -1,12 +1,10 @@
 --- Mason: package manager for LSP servers, formatters, and DAPs.
 --- Auto-installs all required tools on startup via registry API.
---- No mason-lspconfig needed — we use native vim.lsp.config() + vim.lsp.enable().
+--- No mason-lspconfig needed - we use native vim.lsp.config() + vim.lsp.enable().
 local pack = require("config.pack")
 
 pack.add("https://github.com/mason-org/mason.nvim", function()
-  require("mason").setup({
-    ui = { border = "rounded" },
-  })
+  require("mason").setup()
 
   -- Map of all tools to auto-install (mason package names).
   local tools = {
@@ -53,7 +51,7 @@ pack.add("https://github.com/mason-org/mason.nvim", function()
         end)
       )
 
-      -- Fast local check — no network if everything is installed
+      -- Fast local check - no network if everything is installed
       local missing = {}
       local unknown = {}
       for _, name in ipairs(tools) do

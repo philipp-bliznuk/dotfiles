@@ -100,7 +100,9 @@
     "line_height": "comfortable",
     "max_scroll_history_lines": 10000,
     "working_directory": "current_project_directory",
-    "shell": "system"
+    "shell": "system",
+    // plain zsh in the project dir; .zshrc would exec into the shared tmux session
+    "env": { "NO_TMUX": "1" }
   },
 
   // ═══════════ Panels ═══════════
@@ -117,15 +119,8 @@
 
   // ═══════════ Extensions ═══════════
   "auto_install_extensions": {
-    // Themes
+    // Theme
     "catppuccin": true,
-    "tokyo-night": true,
-    "kanagawa-themes": true,
-    "gruvbox-material": true,
-    "rose-pine-theme": true,
-    "everforest": true,
-    "dracula": true,
-    "nord": true,
     // Languages
     "dockerfile": true,
     "docker-compose": true,

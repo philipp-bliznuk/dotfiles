@@ -34,9 +34,6 @@ map({ "n", "v" }, "<leader>y", '"+y', { desc = "Yank to system clipboard" })
 map("n", "<leader>Y", '"+Y', { desc = "Yank line to system clipboard" })
 map({ "n", "v" }, "<leader>P", '"+p', { desc = "Paste from system clipboard" })
 
--- Disable Ex mode
-map("n", "Q", "<nop>", { desc = "Disabled" })
-
 -- Search and replace word under cursor
 map("n", "<leader>sr", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]], { desc = "Replace word under cursor" })
 map("x", "<leader>sr", [["zy:%s/<C-r>z/<C-r>z/gI<Left><Left><Left>]], { desc = "Replace selection" })
@@ -57,9 +54,7 @@ map("n", "<C-Right>", "<cmd>vertical resize +2<CR>", { desc = "Increase width" }
 map("n", "<leader>-", "<cmd>split<CR>", { desc = "Split horizontal" })
 map("n", "<leader>|", "<cmd>vsplit<CR>", { desc = "Split vertical" })
 
--- Buffer navigation
-map("n", "[b", "<cmd>bprevious<CR>", { desc = "Previous buffer" })
-map("n", "]b", "<cmd>bnext<CR>", { desc = "Next buffer" })
+-- Buffer navigation ([b / ]b are nvim defaults)
 map("n", "<leader>bd", "<cmd>bdelete<CR>", { desc = "Delete buffer" })
 map("n", "<leader>bo", function()
   local current = vim.api.nvim_get_current_buf()
@@ -71,9 +66,9 @@ map("n", "<leader>bo", function()
 end, { desc = "Close other buffers" })
 map("n", "<leader>bl", "<cmd>buffer #<CR>", { desc = "Last buffer" })
 
--- Quickfix navigation
-map("n", "[q", "<cmd>cprev<CR>zz", { desc = "Previous quickfix" })
-map("n", "]q", "<cmd>cnext<CR>zz", { desc = "Next quickfix" })
+-- Quickfix navigation: the default commands plus zz ([q ]q keep their count)
+map("n", "[q", "<cmd>execute v:count1 .. 'cprevious'<CR>zz", { desc = "Previous quickfix" })
+map("n", "]q", "<cmd>execute v:count1 .. 'cnext'<CR>zz", { desc = "Next quickfix" })
 map("n", "[Q", "<cmd>cfirst<CR>zz", { desc = "First quickfix" })
 map("n", "]Q", "<cmd>clast<CR>zz", { desc = "Last quickfix" })
 
@@ -84,13 +79,7 @@ map("v", ">", ">gv", { desc = "Indent right" })
 -- Save
 map("n", "<leader>w", "<cmd>w<CR>", { desc = "Save file" })
 
--- Diagnostic navigation
-map("n", "[d", function()
-  vim.diagnostic.jump({ count = -1, float = true })
-end, { desc = "Previous diagnostic" })
-map("n", "]d", function()
-  vim.diagnostic.jump({ count = 1, float = true })
-end, { desc = "Next diagnostic" })
+-- Diagnostics: [d ]d [D ]D are default maps, they float through config.jump
 map("n", "<leader>e", vim.diagnostic.open_float, { desc = "Diagnostic float" })
 map("n", "<leader>q", vim.diagnostic.setloclist, { desc = "Diagnostics to loclist" })
 

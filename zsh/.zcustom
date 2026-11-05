@@ -8,6 +8,10 @@ function zvm_after_init() {
   bindkey '^R' fzf-history-widget
   bindkey '^T' fzf-file-widget
   bindkey "ç" fzf-cd-widget
+
+  # Shift+Enter arrives as CSI-u (terminal keybind, tmux extended-keys always);
+  # unbound, zvm would leave insert mode and feed "13;2u" to vicmd
+  bindkey '^[[13;2u' accept-line
 }
 
 # Normal/visual-mode keybindings (load lazily on first ESC)
@@ -30,6 +34,8 @@ function zvm_after_lazy_keybindings() {
 
   # U for redo (symmetry with u for undo)
   bindkey -M vicmd 'U' redo
+
+  bindkey -M vicmd '^[[13;2u' accept-line
 }
 
 # FZF configuration (fzf 0.48+ built-in walker, no FZF_DEFAULT_COMMAND needed)
@@ -66,7 +72,7 @@ _fzf_comprun() {
 
   case "$command" in
     cd)           fzf --preview 'eza --tree --all --color=always {} | head -200' "$@" ;;
-    export|unset) fzf --preview "eval 'echo ${}'"         "$@" ;;
+    export|unset) fzf --preview "eval 'echo \$'{}"        "$@" ;;
     *)            fzf --preview "$show_file_or_dir_preview" "$@" ;;
   esac
 }
@@ -79,9 +85,3 @@ function y() {
   [[ "$cwd" != "$PWD" ]] && [[ -d "$cwd" ]] && builtin cd -- "$cwd"
   command rm -f -- "$tmp"
 }
-
-# Auto-attach to tmux session
-if (( ${+commands[tmux]} )) && [[ -z "$TMUX" ]]; then
-  tmux attach -t default 2>/dev/null || tmux new -s default
-  exit
-fi

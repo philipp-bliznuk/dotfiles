@@ -36,7 +36,7 @@ autocmd("VimResized", {
 -- Close special buffers with q
 autocmd("FileType", {
   group = augroup("config_close_with_q"),
-  pattern = { "help", "qf", "notify", "checkhealth", "man", "lspinfo", "startuptime" },
+  pattern = { "help", "qf", "checkhealth", "man" },
   callback = function(event)
     vim.bo[event.buf].buflisted = false
     vim.keymap.set("n", "q", "<cmd>close<CR>", { buffer = event.buf, silent = true })
@@ -65,28 +65,12 @@ autocmd("BufWritePre", {
   end,
 })
 
--- Wrap + linebreak for prose filetypes (spell handled by harper-ls)
+-- Wrap for prose filetypes (linebreak is global) (spell handled by harper-ls)
 autocmd("FileType", {
   group = augroup("config_prose_settings"),
   pattern = { "gitcommit", "markdown", "text", "plaintex" },
   callback = function()
     vim.opt_local.wrap = true
-    vim.opt_local.linebreak = true
-  end,
-})
-
--- LspProgress echo (native 0.12)
-autocmd("LspProgress", {
-  group = augroup("config_lsp_progress"),
-  callback = function(event)
-    local client = vim.lsp.get_clients({ id = event.data.client_id })[1]
-    if not client then
-      return
-    end
-    local value = event.data.params and event.data.params.value
-    if value and value.kind == "begin" then
-      vim.cmd.redrawstatus()
-    end
   end,
 })
 
@@ -95,7 +79,7 @@ autocmd("FileType", {
   group = augroup("config_formatoptions"),
   pattern = "*",
   callback = function()
-    vim.opt_local.formatoptions:remove("ro") -- no comment continuation on Enter/o/O
+    vim.opt_local.formatoptions:remove({ "r", "o" }) -- no comment continuation on Enter/o/O; remove("ro") is a silent no-op
     vim.opt_local.formatoptions:append("tnj") -- auto-wrap, numbered lists, join comments
   end,
 })

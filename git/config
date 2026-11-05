@@ -1,26 +1,25 @@
 [init]
 	defaultBranch = master
 
+[user]
+	useConfigOnly = true
+
 [core]
-	editor = nvim
 	pager = delta
 	precomposeUnicode = true
 	ignoreCase = true
 
 [includeIf "hasconfig:remote.*.url:git@pb:**/**"]
-    path = ~/.config/git/pb
+	path = ~/.config/git/pb
 
 [includeIf "hasconfig:remote.*.url:git@ic:**/**"]
-    path = ~/.config/git/ic
+	path = ~/.config/git/ic
 
 [includeIf "hasconfig:remote.*.url:git@gx:**/**"]
-    path = ~/.config/git/gx
+	path = ~/.config/git/gx
 
 [commit]
 	gpgsign = true
-
-[gpg]
-    format = openpgp
 
 [pull]
 	rebase = true
@@ -34,22 +33,22 @@
 	all = true
 
 [rebase]
-	backend = merge
 	autoSquash = true
 
 [rerere]
 	enabled = true
 
 [merge]
-	tool = vimdiff
+	tool = nvimdiff
 	conflictstyle = zdiff3
 
 [mergetool]
 	prompt = false
 
 [diff]
+	algorithm = histogram
 	colorMoved = zebra
-	tool = vimdiff
+	tool = nvimdiff
 
 [difftool]
 	prompt = false
@@ -65,9 +64,6 @@
 
 [blame]
 	coloring = repeatedLines
-
-[color]
-	ui = auto
 
 [color "branch"]
 	current = yellow bold
@@ -91,7 +87,7 @@
 
 [delta]
 	features = line-numbers decorations
-	line-numbers = true
+	syntax-theme = Catppuccin Mocha
 
 [delta "decorations"]
 	file-decoration-style = blue box

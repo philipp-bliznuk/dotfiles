@@ -1,5 +1,4 @@
 [user]
-    name = Philipp Bliznuk
-    username = philipp-bliznuk
-    email = philipp.bliznuk@gmail.com
-    signingkey = 90FCB72BBEA3C725!
+	name = Philipp Bliznuk
+	email = philipp.bliznuk@gmail.com
+	signingkey = 90FCB72BBEA3C725!

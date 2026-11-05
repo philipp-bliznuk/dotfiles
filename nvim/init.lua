@@ -1,18 +1,13 @@
--- Bytecode cache (must be first — before any require)
+-- Bytecode cache (must be first - before any require)
 vim.loader.enable()
 
--- Disable unused built-in plugins (before any sourcing)
+-- Built-in plugins off, before any sourcing: the names runtime/plugin/* checks
+-- (netrw hands directories to yazi)
 vim.g.loaded_netrwPlugin = 1
-vim.g.loaded_netrw = 1
-vim.g.loaded_netrwSettings = 1
-vim.g.loaded_netrwFileHandlers = 1
 vim.g.loaded_zipPlugin = 1
-vim.g.loaded_zip = 1
 vim.g.loaded_tarPlugin = 1
-vim.g.loaded_tar = 1
 vim.g.loaded_gzip = 1
 vim.g.loaded_tutor_mode_plugin = 1
-vim.g.loaded_2html_plugin = 1
 
 -- Leader must be set before any keymaps or plugins
 vim.g.mapleader = " "

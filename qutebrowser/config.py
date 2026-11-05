@@ -1,5 +1,4 @@
 import os
-import re
 from pathlib import Path
 
 config.load_autoconfig()
@@ -10,31 +9,9 @@ os.environ["PATH"] = "/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:" + os
     "PATH", "/usr/bin:/bin:/usr/sbin:/sbin"
 )
 
-# --- Theme palette loading ---
-# GUI apps don't inherit shell env vars — parse theme directly from files
-
 DOTFILES = Path(__file__).resolve().parent.parent
 
-# Read theme name from .zshenv
-_theme = "catppuccin-mocha"
-_zshenv = DOTFILES / ".zshenv"
-if _zshenv.exists():
-    for _line in _zshenv.read_text().splitlines():
-        _m = re.match(r'^export THEME="(.+)"', _line)
-        if _m:
-            _theme = _m.group(1)
-            break
-
-# Parse palette from theme.zsh
-_raw = {}
-_theme_file = DOTFILES / "themes" / _theme / "theme.zsh"
-if _theme_file.exists():
-    for _line in _theme_file.read_text().splitlines():
-        _m = re.match(r'\s+(\w+)\s+"(#[0-9a-fA-F]{6})"', _line)
-        if _m:
-            _raw[_m.group(1)] = _m.group(2)
-
-# Per-color fallbacks (catppuccin-mocha defaults)
+# --- Palette: Catppuccin Mocha ---
 _MOCHA = {
     "rosewater": "#f5e0dc",
     "flamingo": "#f2cdcd",
@@ -66,8 +43,8 @@ _MOCHA = {
 
 
 def p(key):
-    """Get palette color by key, falling back to mocha default."""
-    return _raw.get(key, _MOCHA[key])
+    """Palette color by catppuccin name."""
+    return _MOCHA[key]
 
 
 # --- Colors ---

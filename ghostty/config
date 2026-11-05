@@ -1,4 +1,4 @@
-# Theme (managed by install.sh)
+# Theme
 theme = Catppuccin Mocha
 
 # Font
@@ -6,7 +6,7 @@ font-family = JetBrainsMono Nerd Font Mono
 font-size = 13
 font-thicken = true
 
-# Cursor (color managed by install.sh)
+# Cursor
 cursor-color = #b4befe
 cursor-style = block
 cursor-style-blink = false
@@ -17,7 +17,11 @@ macos-titlebar-style = hidden
 macos-option-as-alt = true
 macos-non-native-fullscreen = true
 window-save-state = always
-window-step-resize = true
+# No step resize: macOS rounds a maximized frame down to whole cells and leaves
+# a gap at the bottom. Pixel-precise frame instead, remainder becomes
+# background-coloured padding, balanced across all four edges.
+window-step-resize = false
+window-padding-balance = true
 
 # Behavior
 confirm-close-surface = false
@@ -32,3 +36,6 @@ custom-shader-animation = always
 
 # Keybinds
 keybind = super+r=reload_config
+# Shift+Enter as CSI-u for tmux (extended-keys always) and for zsh. Apps that
+# enable the kitty keyboard protocol get the same bytes from it anyway.
+keybind = shift+enter=text:\x1b[13;2u

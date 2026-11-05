@@ -18,5 +18,9 @@ alias n="nvim"
 alias dotf='cd "$HOME/projects/dotfiles/" && ${VISUAL:-${EDITOR:-nvim}}'
 alias brewup="brew update && brew upgrade && brew cleanup"
 
-# Yubikey resync
-alias yksync='gpg-connect-agent "scd serialno" "learn --force" /bye'
+# Safety: ask before overwriting; rm asks once for more than three files or
+# a recursive delete (-I, not -i: a prompt per file trains a reflexive y).
+# Interactive shells only; scripts and `command rm` are unaffected.
+alias cp="cp -i"
+alias mv="mv -i"
+alias rm="rm -I"

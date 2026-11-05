@@ -1,4 +1,4 @@
-# Pure zsh prompt — themed via THEME_COLORS
+# Pure zsh prompt - catppuccin-mocha
 # No external dependencies (no starship, no subprocess forks)
 
 # Precise timing via zsh/datetime module
@@ -25,13 +25,20 @@ function precmd() {
   fi
 }
 
-# --- Git branch (reads .git/HEAD directly — no fork) ---
+# --- Git branch (reads .git/HEAD directly - no fork) ---
 function _prompt_git_branch() {
   local branch head_file dir=$PWD
 
-  # Walk up to find .git
+  # Walk up to find .git: a directory, or in a worktree a file naming the gitdir
+  local gitdir
   while [[ -n "$dir" ]]; do
     [[ -f "$dir/.git/HEAD" ]] && { head_file="$dir/.git/HEAD"; break }
+    if [[ -f "$dir/.git" ]]; then
+      read -r gitdir < "$dir/.git"
+      gitdir="${gitdir#gitdir: }"
+      [[ "$gitdir" == /* ]] || gitdir="$dir/$gitdir"
+      [[ -f "$gitdir/HEAD" ]] && { head_file="$gitdir/HEAD"; break }
+    fi
     dir="${dir%/*}"
   done
   [[ -z "$head_file" ]] && return
@@ -42,17 +49,17 @@ function _prompt_git_branch() {
   else
     branch="${branch[1,7]}…"
   fi
-  print -n " %F{${THEME_COLORS[peach]}}[${branch}]%f"
+  print -n " %F{#fab387}[${branch}]%f"
 }
 
 # --- Prompt ---
 setopt prompt_subst
 
 PROMPT='
-%F{${THEME_COLORS[blue]}}%B%1~%b%f$(_prompt_git_branch)
-%(?.%F{${THEME_COLORS[green]}}.%F{${THEME_COLORS[red]}})❯%f '
+%F{#89b4fa}%B%1~%b%f$(_prompt_git_branch)
+%(?.%F{#a6e3a1}.%F{#f38ba8})❯%f '
 
-RPROMPT='%F{${THEME_COLORS[overlay1]}}${_cmd_duration}%f'
+RPROMPT='%F{#7f849c}${_cmd_duration}%f'
 
 # --- Transient prompt (collapse previous prompts to minimal ❯) ---
 function _transient_prompt_hook() {
@@ -67,7 +74,7 @@ function _transient_prompt_hook() {
   done
 
   local saved_prompt=$PROMPT saved_rprompt=$RPROMPT
-  PROMPT='%(?.%F{${THEME_COLORS[green]}}.%F{${THEME_COLORS[red]}})❯%f '
+  PROMPT='%(?.%F{#a6e3a1}.%F{#f38ba8})❯%f '
   RPROMPT=''
   zle .reset-prompt
   PROMPT=$saved_prompt

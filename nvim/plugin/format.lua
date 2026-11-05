@@ -21,12 +21,10 @@ pack.add("https://github.com/stevearc/conform.nvim", function()
       css = { "prettierd" },
       scss = { "prettierd" },
       toml = { lsp_format = "prefer" }, -- taplo LSP formatting is excellent
-      sql = { "pgformatter" },
+      sql = { "pg_format" },
       sh = { "shfmt" },
       bash = { "shfmt" },
-      zsh = { "shfmt" },
       markdown = { "prettierd" },
-      dockerfile = { "trim_whitespace" },
       ["_"] = { "trim_whitespace" }, -- catch-all for unspecified filetypes
     },
     default_format_opts = {
@@ -34,17 +32,11 @@ pack.add("https://github.com/stevearc/conform.nvim", function()
     },
     format_on_save = {
       timeout_ms = 500,
-      lsp_format = "fallback",
-    },
-    formatters = {
-      shfmt = {
-        prepend_args = { "-i", "4", "-ci" },
-      },
     },
   })
 
   -- Manual format keymap (works even if format_on_save is somehow skipped)
   util.map({ "n", "v" }, "<leader>cf", function()
-    require("conform").format({ async = true, lsp_format = "fallback" })
+    require("conform").format({ async = true })
   end, { desc = "Format buffer" })
 end)

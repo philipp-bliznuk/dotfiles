@@ -1,18 +1,15 @@
 line-length = 120
-indent-width = 4
 target-version = "py314"
-preview = true
+preview = true # lint and format inherit it
 fix = true
 show-fixes = true
 unsafe-fixes = true
 
 [format]
-preview = true
 skip-magic-trailing-comma = true
 docstring-code-format = true
 
 [lint]
-preview = true
 select = [
     "A",     # flake8-builtins
     "ANN",   # flake8-annotations
@@ -30,7 +27,6 @@ select = [
     "ERA",   # eradicate
     "EXE",   # flake8-executable
     "F",     # pyflakes
-    "FA",    # flake8-future-annotations
     "FBT",   # flake8-boolean-trap
     "FLY",   # flynt
     "FURB",  # refurb
@@ -96,7 +92,6 @@ ban-relative-imports = "all"
 [lint.flake8-type-checking]
 strict = true
 exempt-modules = ["typing", "typing_extensions"]
-quote-annotations = false
 
 [lint.flake8-pytest-style]
 parametrize-values-type = "tuple"
@@ -114,7 +109,7 @@ max-complexity = 4
 
 [lint.pep8-naming]
 classmethod-decorators = [
-    "pydantic.validator",
+    "pydantic.field_validator",
     "pydantic.model_validator",
     "declared_attr",
     "expression",

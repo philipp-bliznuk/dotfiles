@@ -1,25 +1,24 @@
 '$schema' = 'https://jj-vcs.github.io/jj/latest/config-schema.json'
 
-[user]
-name = "Philipp Bliznuk"
-email = "philipp.bliznuk@gmail.com"
+# No [user] here: jj-identity copies the identity git resolves per remote into
+# each repo (jj clone, jj init), and a repo set up another way warns on every
+# command and cannot push until it is run there. signing.key stays global: an
+# empty key makes gpg fail (-u ""), which would abort a clone at its first
+# commit, before jj-identity can set the repo's own.
 
 [ui]
 default-command = "log"
-editor = "nvim"
-diff-editor = ":builtin"
-merge-editor = "vimdiff"
+merge-editor = "vimdiff"  # builtin preset, program swapped below
 pager = "delta"
 diff-formatter = ":git"
+
+[merge-tools.vimdiff]
+program = "nvim"
 
 [signing]
 behavior = "own"
 backend = "gpg"
-key = "90FCB72BBEA3C725"
-
-[git]
-colocate = true
-sign-on-push = false
+key = "90FCB72BBEA3C725!"
 
 [remotes.origin]
 auto-track-bookmarks = "*"
@@ -32,7 +31,7 @@ auto-track-bookmarks = "*"
 'format_timestamp(timestamp)' = 'timestamp.ago()'
 
 [aliases]
-ci = ["commit"]
 d = ["diff"]
-st = ["status"]
 lg = ["log", "--limit", "20"]
+clone = ["util", "exec", "--", "jj-identity", "clone"]
+init = ["util", "exec", "--", "jj-identity", "init"]

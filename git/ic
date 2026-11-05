@@ -1,5 +1,4 @@
 [user]
-    name = Philipp Bliznuk
-    username = pbliznuk
-    email = pbliznuk@ironcloud.co
-    signingkey = BFDAFD1942C66FAD!
+	name = Philipp Bliznuk
+	email = pbliznuk@ironcloud.co
+	signingkey = BFDAFD1942C66FAD!

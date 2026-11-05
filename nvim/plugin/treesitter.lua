@@ -6,8 +6,27 @@ local util = require("util")
 pack.add("https://github.com/arborist-ts/arborist.nvim", function()
   require("arborist").setup({
     prefer_wasm = false,
-    update_cadence = "weekly",
-    install_popular = true,
+    -- parsers are pinned in the plugin's registry/pins.toml and move with the
+    -- plugin's rev in nvim-pack-lock.json, not with a background fetch
+    update_cadence = "manual",
+    -- the popular set is 28 grammars cloned and compiled at first start;
+    -- anything not listed here installs on first open
+    install_popular = false,
+    ensure_installed = {
+      "python",
+      "javascript",
+      "typescript",
+      "tsx",
+      "css",
+      "html",
+      "go",
+      "bash",
+      "json",
+      "yaml",
+      "toml",
+      "regex", -- injected into strings and literals, never a filetype of its own
+      "diff",
+    },
     disable = {
       indent = { "python", "lua" }, -- TS indent broken for single-line nodes; built-in is reliable
     },
@@ -15,7 +34,7 @@ pack.add("https://github.com/arborist-ts/arborist.nvim", function()
 end)
 
 -- Force synchronous parse on FileType so textobjects/context work on first keypress.
--- Needed because nvim-treesitter-textobjects doesn't call parser:parse() itself —
+-- Needed because nvim-treesitter-textobjects doesn't call parser:parse() itself -
 -- it relies on the highlighter's async parse which may not finish before first input.
 vim.api.nvim_create_autocmd("FileType", {
   group = util.augroup("treesitter_force_parse"),
@@ -41,8 +60,6 @@ vim.api.nvim_create_autocmd("FileType", {
 pack.add("https://github.com/nvim-treesitter/nvim-treesitter-context", function()
   require("treesitter-context").setup({
     max_lines = 3,
-    mode = "cursor",
-    trim_scope = "outer",
   })
   util.map("n", "<leader>tc", function()
     require("treesitter-context").toggle()
@@ -50,7 +67,7 @@ pack.add("https://github.com/nvim-treesitter/nvim-treesitter-context", function(
 end)
 
 -- ─── Textobjects (selection + movement engine) ──────────────────────────────
--- Load immediately (not deferred) — keymaps must be available on first keypress
+-- Load immediately (not deferred) - keymaps must be available on first keypress
 pack.add("https://github.com/nvim-treesitter/nvim-treesitter-textobjects", function()
   local select = require("nvim-treesitter-textobjects.select")
   local move = require("nvim-treesitter-textobjects.move")
@@ -112,8 +129,6 @@ pack.on_ft("https://github.com/windwp/nvim-ts-autotag", {
     "vue",
     "svelte",
     "astro",
-    "tsx",
-    "jsx",
   },
   config = function()
     require("nvim-ts-autotag").setup()

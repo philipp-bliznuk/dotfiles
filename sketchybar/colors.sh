@@ -1,39 +1,30 @@
 #!/bin/bash
 
-# Self-parsing theme colors at runtime.
-# Reads THEME from .zshenv, loads hex values from theme.zsh,
-# converts #RRGGBB → 0xFFRRGGBB for sketchybar.
-
-THEME=$(grep -m1 '^export THEME=' "$HOME/.zshenv" 2>/dev/null | cut -d'"' -f2)
-THEME=${THEME:-catppuccin-mocha}
-
-THEME_FILE="$HOME/.config/themes/$THEME/theme.zsh"
-
-if [[ ! -f "$THEME_FILE" ]]; then
-	THEME_FILE="$HOME/.config/themes/catppuccin-mocha/theme.zsh"
-fi
+# Catppuccin Mocha, as 0xAARRGGBB for sketchybar.
 
 TRANSPARENT=0x00000000
 
-# Parse "key "#hex"" pairs → 0xFFRRGGBB bash variables (UPPERCASE)
-while IFS= read -r line; do
-	if [[ "$line" =~ ^[[:space:]]*([a-z0-9]+)[[:space:]]+\"#([a-fA-F0-9]{6})\" ]]; then
-		name="${BASH_REMATCH[1]}"
-		hex="${BASH_REMATCH[2]}"
-		upper=$(echo "$name" | tr '[:lower:]' '[:upper:]')
-		declare "$upper=0xFF${hex}"
-	fi
-done <"$THEME_FILE"
+RED=0xFFF38BA8
+PEACH=0xFFFAB387
+GREEN=0xFFA6E3A1
+SKY=0xFF89DCEB
+BLUE=0xFF89B4FA
+TEXT=0xFFCDD6F4
+OVERLAY1=0xFF7F849C
+OVERLAY0=0xFF6C7086
+SURFACE2=0xFF585B70
+SURFACE1=0xFF45475A
+BASE=0xFF1E1E2E
 
 # Semantic aliases
 BAR_COLOR=$TRANSPARENT
 BAR_BORDER_COLOR=$TRANSPARENT
-ICON_COLOR=${TEXT:-0xFFCDD6F4}
-LABEL_COLOR=${TEXT:-0xFFCDD6F4}
-HIGHLIGHT=${OVERLAY1:-0xFF7F849C}
-BACKGROUND_COLOR=${BASE:-0xFF1E1E2E}
+ICON_COLOR=$TEXT
+LABEL_COLOR=$TEXT
+HIGHLIGHT=$OVERLAY1
+BACKGROUND_COLOR=$BASE
 
 # Semi-transparent variants (0x60 = ~38% opacity)
 POPUP_BACKGROUND_COLOR="0x60${SURFACE1#0xFF}"
-POPUP_BORDER_COLOR=${OVERLAY0:-0xFF6C7086}
+POPUP_BORDER_COLOR=$OVERLAY0
 BACKGROUND_BORDER_COLOR="0x60${SURFACE2#0xFF}"

@@ -61,9 +61,6 @@ export PAGER="less -FX"
 # Go
 export GOPATH=$HOME/go
 
-# Theme: catppuccin-mocha | dracula | nord | rose-pine | tokyo-night | gruvbox-dark | everforest | kanagawa
-export THEME="catppuccin-mocha"
-
 # Git (XDG-native config)
 export GIT_CONFIG_GLOBAL="$XDG_CONFIG_HOME/git/config"
 

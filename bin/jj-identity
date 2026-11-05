@@ -1,0 +1,74 @@
+#!/usr/bin/env bash
+# jj-identity [clone SOURCE [DEST] | init [DEST]]
+# Give a jj repo the identity git resolves for it. git picks user.name,
+# user.email and user.signingkey per remote (includeIf hasconfig:remote.*.url in
+# git/config → git/{pb,ic,gx}); jj has no such condition and no hooks, so this
+# copies the three values into jj's per-repo config (jj config path --repo:
+# ~/.config/jj/repos/<id>/config.toml, keyed by .jj/repo/config-id) once and
+# the identity keeps living in one place. `clone` and `init` are the `jj clone`
+# and `jj init` aliases: run the jj command, then fix the identity. Positional
+# arguments only; a flag is usage before anything runs (jj git init --flags,
+# then jj-identity). Without a verb: the repo at hand. A fresh working-copy
+# commit (empty, undescribed) is re-authored too; a commit with content or a
+# description keeps its author.
+set -Eeuo pipefail
+
+usage() {
+	sed -n '2p' "$0" >&2
+	exit 64
+}
+
+for arg in "$@"; do
+	[[ $arg == -* ]] && usage
+done
+verb="${1:-}"
+case "$verb" in
+clone)
+	(( $# == 2 || $# == 3 )) || usage
+	# jj's default: strip .git, take the last path segment (/, : or \)
+	src="${2%/}"
+	src="${src%.git}"
+	dest="${3:-${src##*[/:\\]}}"
+	jj git clone "$2" "$dest"
+	cd "$dest"
+	;;
+init)
+	(( $# <= 2 )) || usage
+	jj git init "${2:-.}"
+	cd "${2:-.}"
+	;;
+"") ;;
+*) usage ;;
+esac
+
+root="$(jj root)"
+# not colocated: git has to read jj's own store for the remotes
+[[ -e "$root/.git" ]] || export GIT_DIR="$root/.jj/repo/store/git"
+if [[ -z "$(git -C "$root" remote)" ]]; then
+	echo "jj-identity: no remote yet, run jj-identity once one is added" >&2
+	# a fresh init has none, and the init itself succeeded
+	[[ $verb == init ]] && exit 0
+	exit 1
+fi
+name="$(git -C "$root" config user.name || true)"
+email="$(git -C "$root" config user.email || true)"
+key="$(git -C "$root" config user.signingkey || true)"
+if [[ -z "$name" || -z "$email" ]]; then
+	echo "jj-identity: git resolves no identity for this repo's remote, nothing set" >&2
+	exit 1
+fi
+
+if [[ -n "$key" ]]; then
+	jj config set --repo signing.key "$key"
+else
+	jj config unset --repo signing.key 2>/dev/null || true
+fi
+# A fresh working-copy commit carries the global (empty) identity; re-author
+# (and so re-sign, with the key just set) before `config set user.*`, which
+# otherwise warns that the working copy keeps its author.
+if [[ "$(jj log -r @ --no-graph -T 'if(empty && description == "", "fresh")')" == fresh ]]; then
+	jj --quiet metaedit --update-author --config "user.name=$name" --config "user.email=$email"
+fi
+jj config set --repo user.name "$name"
+jj config set --repo user.email "$email"
+echo "jj-identity: $name <$email>${key:+, signing key $key}"

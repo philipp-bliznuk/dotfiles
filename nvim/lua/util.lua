@@ -9,14 +9,13 @@ function M.augroup(name)
   return vim.api.nvim_create_augroup(name, { clear = true })
 end
 
---- Set a keymap with sensible defaults (noremap, silent).
---- Pass opts to override or extend.
+--- Set a keymap, silent unless opts says otherwise.
 ---@param mode string|string[]
 ---@param lhs string
 ---@param rhs string|function
 ---@param opts? table
 function M.map(mode, lhs, rhs, opts)
-  opts = vim.tbl_extend("keep", opts or {}, { noremap = true, silent = true })
+  opts = vim.tbl_extend("keep", opts or {}, { silent = true })
   vim.keymap.set(mode, lhs, rhs, opts)
 end
 

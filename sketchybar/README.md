@@ -1,6 +1,6 @@
 # Sketchybar
 
-Minimal, themed status bar for macOS replacing the native menu bar. Displays system metrics on the left, utilities on the right. Fully integrated with the global theme system.
+Minimal status bar for macOS replacing the native menu bar. Displays system metrics on the left, utilities on the right. Catppuccin Mocha throughout.
 
 ## Screenshots
 
@@ -17,7 +17,7 @@ Minimal, themed status bar for macOS replacing the native menu bar. Displays sys
 ```
 sketchybar/
 ├── sketchybarrc          # Entry point: bar config, item loading
-├── colors.sh             # Runtime theme parser (reads from themes/$THEME/)
+├── colors.sh             # Catppuccin Mocha palette as 0xAARRGGBB
 ├── settings.sh           # Font, padding, defaults, popup helper
 ├── items/                # Item definitions (position, frequency, icon)
 │   ├── battery.sh
@@ -48,11 +48,10 @@ sketchybar/
 
 ## Features
 
-- **Dynamic theming** — `colors.sh` self-parses `THEME` from `.zshenv` at runtime and loads hex values from `~/.config/themes/$THEME/theme.zsh`. No install-time dependency.
-- **Poll-based media** — `media-control get` every 1s. No background daemons. Never toggles `drawing` state (avoids WindowServer render caching bug).
-- **Performant plugins** — CPU via `ps`+awk (instant), RAM via `vm_stat` (instant), network rates via file-based delta (no `sleep`), VPN via `mullvad status` CLI (no curl).
-- **Brew management** — Hover popup shows outdated packages, click to upgrade. Lockfile prevents concurrent processes.
-- **Hot-reload** — `hotload on` enables live config changes during development.
+- **Poll-based media** - `media-control get` every 1s. No background daemons. Never toggles `drawing` state (avoids WindowServer render caching bug).
+- **Performant plugins** - CPU via `ps`+awk (instant), RAM via `vm_stat` (instant), network rates via file-based delta (no `sleep`), VPN via `mullvad status` CLI (no curl).
+- **Brew management** - Hover popup shows outdated packages, click to upgrade. Lockfile prevents concurrent processes.
+- **Hot-reload** - `hotload on` enables live config changes during development.
 
 ## Layout
 

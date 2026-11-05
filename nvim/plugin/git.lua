@@ -33,7 +33,6 @@ pack.on_event("https://github.com/lewis6991/gitsigns.nvim", {
         bmap("n", "<leader>hS", gs.stage_buffer, "Stage buffer")
         bmap({ "n", "v" }, "<leader>hr", ":Gitsigns reset_hunk<CR>", "Reset hunk")
         bmap("n", "<leader>hR", gs.reset_buffer, "Reset buffer")
-        bmap("n", "<leader>hu", gs.undo_stage_hunk, "Undo stage hunk")
         bmap("n", "<leader>hp", gs.preview_hunk_inline, "Preview hunk inline")
 
         -- Blame
