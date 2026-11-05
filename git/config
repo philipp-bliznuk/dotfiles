@@ -97,3 +97,11 @@
 	file-decoration-style = blue box
 	hunk-header-decoration-style = magenta box
 	line-numbers-right-format = "{np:^4}│ "
+
+[credential "https://github.com"]
+	helper = 
+	helper = !gh auth git-credential
+
+[credential "https://gist.github.com"]
+	helper = 
+	helper = !gh auth git-credential
